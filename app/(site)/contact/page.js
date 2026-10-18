@@ -1,0 +1,114 @@
+import ContactForm from '@/components/ContactForm';
+import MaterialIcon from '@/components/MaterialIcon';
+import PageHead from '@/components/PageHead';
+import { getPrograms, getSettings } from '@/lib/queries';
+import { socialLinks } from '@/lib/socials';
+
+export const metadata = { title: 'Contact' };
+
+export default async function ContactPage() {
+  const [settings, programs] = await Promise.all([getSettings(), getPrograms({ scheduleOnly: true })]);
+  const socials = socialLinks(settings);
+
+  return (
+    <main>
+      <PageHead
+        label={settings.contact_kicker}
+        title="We would love to *hear from you*"
+        body={settings.contact_body}
+      />
+
+      <section className="section">
+        <div className="container contact-grid">
+          <div className="contact-details">
+            <div className="section-label">Where to find us</div>
+            <div className="detail-grid">
+              <div className="detail">
+                <MaterialIcon name="place" />
+                <div>
+                  <strong>Location</strong>
+                  <span>{settings.address}</span>
+                </div>
+              </div>
+              <div className="detail">
+                <MaterialIcon name="call" />
+                <div>
+                  <strong>Phone</strong>
+                  <a href={`tel:${settings.phone.replace(/\s/g, '')}`}>{settings.phone}</a>
+                </div>
+              </div>
+              <div className="detail">
+                <MaterialIcon name="mail" />
+                <div>
+                  <strong>Email</strong>
+                  <a href={`mailto:${settings.email}`}>{settings.email}</a>
+                </div>
+              </div>
+              <div className="detail">
+                <MaterialIcon name="church" />
+                <div>
+                  <strong>{settings.hero_badge_one_label}</strong>
+                  <span>
+                    {settings.hero_badge_one_value}. {settings.service_note}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {programs.length ? (
+              <>
+                <div className="section-label">Every week</div>
+                <div className="schedule-list">
+                  {programs.map((program) => (
+                    <div className="schedule-item" key={program.id}>
+                      <div className="schedule-day">{program.meeting_day}</div>
+                      <div>
+                        <h3>{program.title}</h3>
+                      </div>
+                      <div className="schedule-when">
+                        <span className="schedule-time">{program.meeting_time || 'Time TBC'}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {socials.length ? (
+              <>
+                <div className="section-label">Find us online</div>
+                <div className="social-row">
+                  {socials.map((item) => (
+                    <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer">
+                      {item.label}
+                      <MaterialIcon name="arrow_outward" className="msvg-inline" />
+                    </a>
+                  ))}
+                </div>
+              </>
+            ) : null}
+
+            {settings.maps_embed_url ? (
+              <div className="map-wrap">
+                <iframe
+                  src={settings.maps_embed_url}
+                  width="100%"
+                  height="380"
+                  style={{ border: 0, display: 'block' }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  title={`${settings.church_name} location`}
+                />
+              </div>
+            ) : (
+              <div className="empty-map">{settings.address}</div>
+            )}
+          </div>
+
+          <ContactForm />
+        </div>
+      </section>
+    </main>
+  );
+}

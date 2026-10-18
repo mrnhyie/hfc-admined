@@ -1,0 +1,263 @@
+        /* ---- ADMIN ---- */
+        .admin {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            background: #f4f2f6;
+            color: var(--ink);
+            min-height: 100vh
+        }
+
+        .admin-shell {
+            display: grid;
+            grid-template-columns: 232px minmax(0, 1fr);
+            min-height: 100vh
+        }
+
+        .admin-side {
+            background: var(--purple-dark);
+            color: #fff;
+            padding: 24px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px
+        }
+
+        .admin-side a {
+            color: rgba(255, 255, 255, .8);
+            font-size: 14px;
+            padding: 8px 10px;
+            border-left: 3px solid transparent
+        }
+
+        .admin-side a:hover {
+            color: #fff
+        }
+
+        .admin-side a[data-active="true"] {
+            color: #fff;
+            background: rgba(255, 255, 255, .08);
+            border-left-color: var(--gold)
+        }
+
+        .admin-brand {
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
+            color: #fff
+        }
+
+        .admin-main {
+            padding: 30px 34px 70px
+        }
+
+        .admin-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px
+        }
+
+        .admin-head h1 {
+            font-size: 26px;
+            font-weight: 600
+        }
+
+        .admin-card {
+            background: #fff;
+            border: 1px solid #e3dcea;
+            padding: 22px;
+            margin-bottom: 20px
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        .admin-table th {
+            text-align: left;
+            font-size: 11px;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 10px 12px;
+            border-bottom: 1px solid #e3dcea
+        }
+
+        .admin-table td {
+            padding: 12px;
+            border-bottom: 1px solid #efe9f4;
+            vertical-align: top
+        }
+
+        .admin-table tr:hover td {
+            background: #faf7fc
+        }
+
+        .stat {
+            font-size: 30px;
+            font-weight: 600;
+            color: var(--purple)
+        }
+
+        .label {
+            display: block;
+            font-size: 12px;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 6px
+        }
+
+        .input,
+        .select,
+        .textarea {
+            width: 100%;
+            font: inherit;
+            font-size: 14px;
+            padding: 10px 12px;
+            border: 1px solid #d8cede;
+            background: #fff;
+            border-radius: 0
+        }
+
+        .textarea {
+            min-height: 190px;
+            line-height: 1.6
+        }
+
+        .input:focus,
+        .select:focus,
+        .textarea:focus {
+            outline: 2px solid var(--purple);
+            outline-offset: 1px
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px
+        }
+
+        .form-row-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr))
+        }
+
+        .check {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 14px
+        }
+
+        .btn-admin {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border: 1px solid var(--purple);
+            background: var(--purple);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 0
+        }
+
+        .btn-admin:hover {
+            background: var(--purple-dark)
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--purple);
+            border-color: #cbbdd3
+        }
+
+        .btn-ghost:hover {
+            background: var(--purple-soft);
+            color: var(--purple-dark)
+        }
+
+        .btn-danger {
+            background: #a5191f;
+            border-color: #a5191f
+        }
+
+        .btn-danger:hover {
+            background: #85121a
+        }
+
+        .pill {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            padding: 3px 8px;
+            border-radius: 0
+        }
+
+        .pill-live {
+            background: #e6f4ea;
+            color: #1c6b32
+        }
+
+        .pill-draft {
+            background: #f1eee6;
+            color: #6b6250
+        }
+
+        .pill-new {
+            background: var(--purple-soft);
+            color: var(--purple)
+        }
+
+        .form-error {
+            color: #a5191f;
+            font-size: 13px;
+            margin-top: 5px
+        }
+
+        .login-box {
+            max-width: 380px;
+            margin: 12vh auto;
+            background: #fff;
+            border: 1px solid #e3dcea;
+            padding: 30px
+        }
+
+        @media(max-width:900px) {
+            .admin-shell {
+                grid-template-columns: 1fr
+            }
+
+            .admin-side {
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: center
+            }
+
+            .admin-main {
+                padding: 22px 18px 60px
+            }
+
+            .detail-grid,
+            .form-row-2 {
+                grid-template-columns: 1fr
+            }
+
+            .page-head h1 {
+                font-size: 34px
+            }
+        }
