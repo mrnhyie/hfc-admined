@@ -4,19 +4,39 @@ import MaterialIcon from '@/components/MaterialIcon';
 import { eventDateStack, formatDate, formatTime } from '@/lib/dates';
 import { POST_KIND_LABELS } from '@/lib/forms';
 
+const POST_ICONS = { sermon: 'smart_display', announcement: 'public', devotional: 'auto_stories' };
+
 function Status({ published }) {
   return (
-    <span className={published ? 'pill pill-published card-status' : 'pill pill-draft card-status'}>
+    <span className={published ? 'pill pill-published card-shot-flag' : 'pill pill-draft card-shot-flag'}>
       {published ? 'published' : 'draft'}
     </span>
   );
 }
 
-function Actions({ item, viewHref, editHref, deleteAction, deleteLabel = 'Delete', extra }) {
+/* The shot is what makes these read as products rather than table rows: the
+   entity's own image when it has one, and a plate carrying its identifying
+   mark — date, icon, kind — when it does not. The status rides the corner of
+   the shot the way a sale flag rides a product photo. */
+function Shot({ src, alt, badge, children }) {
+  return (
+    <div className="card-shot">
+      {src ? <img src={src} alt={alt || ''} loading="lazy" /> : <div className="card-shot-plate">{children}</div>}
+      {badge}
+    </div>
+  );
+}
+
+function Actions({ item, viewHref, editHref, deleteAction, deleteLabel = 'Delete', watchHref, extra }) {
   return (
     <div className="card-foot">
       <div className="card-note">{extra}</div>
       <div className="card-actions">
+        {watchHref ? (
+          <a className="btn-ghost" href={watchHref} target="_blank" rel="noopener noreferrer">
+            Watch
+          </a>
+        ) : null}
         {viewHref ? (
           <a className="btn-ghost" href={viewHref} target="_blank" rel="noopener noreferrer">
             View
@@ -43,18 +63,16 @@ export function EventItemCard({ event, deleteAction }) {
   const isNext = new Date(event.starts_at).getTime() >= Date.now();
 
   return (
-    <article className="entity-card card-event">
-      <div className="card-date">
-        <strong>{date.day}</strong>
-        <span>{date.month}</span>
-        <span>{date.weekday}</span>
-      </div>
+    <article className="entity-card">
+      <Shot src={event.cover_url} alt={event.title} badge={<Status published={event.published} />}>
+        <span className="card-shot-day">{date.day}</span>
+        <span className="card-shot-when">
+          {date.month} · {date.weekday}
+        </span>
+      </Shot>
 
-      <div className="card-stack">
-        <div className="entity-card-top">
-          <p className="card-meta">{isNext ? 'Upcoming' : 'Past'}</p>
-          <Status published={event.published} />
-        </div>
+      <div className="card-info">
+        <p className="card-meta">{isNext ? 'Upcoming' : 'Past'}</p>
 
         <h3>{event.title}</h3>
         <p className="card-meta">
@@ -76,31 +94,30 @@ export function EventItemCard({ event, deleteAction }) {
 export function ProgramItemCard({ program, deleteAction }) {
   return (
     <article className="entity-card">
-      <div className="entity-card-top">
-        <span className="card-icon">
-          <MaterialIcon name={program.icon || 'church'} />
-        </span>
-        <Status published={program.published} />
+      <Shot src={program.cover_url} alt={program.title} badge={<Status published={program.published} />}>
+        <MaterialIcon name={program.icon || 'church'} className="card-shot-mark" />
+        {program.category ? <span className="card-shot-when">{program.category}</span> : null}
+      </Shot>
+
+      <div className="card-info">
+        <p className="card-meta">
+          {program.meeting_day ? [program.meeting_day, program.meeting_time].filter(Boolean).join(' · ') : 'Ministry'}
+        </p>
+
+        <h3>{program.title}</h3>
+
+        <Actions
+          item={program}
+          viewHref={`/programs/${program.slug}`}
+          editHref={`/admin/programs/${program.id}`}
+          deleteAction={deleteAction}
+          extra={
+            <span className="card-meta">
+              {[program.venue, `Order ${program.sort_order}`].filter(Boolean).join(' · ')}
+            </span>
+          }
+        />
       </div>
-
-      <h3>{program.title}</h3>
-      <p className="card-meta">
-        {program.meeting_day
-          ? [program.meeting_day, program.meeting_time].filter(Boolean).join(' · ')
-          : 'Ministry'}
-      </p>
-
-      <Actions
-        item={program}
-        viewHref={`/programs/${program.slug}`}
-        editHref={`/admin/programs/${program.id}`}
-        deleteAction={deleteAction}
-        extra={
-          <span className="card-meta">
-            {[program.category, `Order ${program.sort_order}`].filter(Boolean).join(' · ')}
-          </span>
-        }
-      />
     </article>
   );
 }
@@ -108,48 +125,55 @@ export function ProgramItemCard({ program, deleteAction }) {
 export function PostItemCard({ post, deleteAction }) {
   return (
     <article className="entity-card">
-      <div className="entity-card-top">
-        <p className="card-meta">{POST_KIND_LABELS[post.kind] || post.kind}</p>
-        <Status published={post.published} />
+      <Shot src={post.cover_url} alt={post.title} badge={<Status published={post.published} />}>
+        <MaterialIcon name={POST_ICONS[post.kind] || 'auto_stories'} className="card-shot-mark" />
+        <span className="card-shot-when">{POST_KIND_LABELS[post.kind] || post.kind}</span>
+      </Shot>
+
+      <div className="card-info">
+        {post.series || post.speaker ? (
+          <p className="card-meta">{[post.series, post.speaker].filter(Boolean).join(' · ')}</p>
+        ) : null}
+
+        <h3>{post.title}</h3>
+        <p className="card-body">{post.excerpt || 'No summary yet.'}</p>
+
+        <Actions
+          item={post}
+          viewHref={`/content/${post.slug}`}
+          editHref={`/admin/content/${post.id}`}
+          deleteAction={deleteAction}
+          watchHref={post.kind === 'sermon' ? post.video_url : null}
+          extra={
+            <span className="card-meta">
+              {[formatDate(post.published_at), post.event_title || post.program_title].filter(Boolean).join(' · ')}
+            </span>
+          }
+        />
       </div>
-
-      <h3>{post.title}</h3>
-      <p className="card-meta">
-        {[post.series, post.speaker].filter(Boolean).join(' · ') || 'No series or speaker set'}
-      </p>
-      <p className="card-body">{post.excerpt || 'No summary yet.'}</p>
-
-      <Actions
-        item={post}
-        viewHref={`/content/${post.slug}`}
-        editHref={`/admin/content/${post.id}`}
-        deleteAction={deleteAction}
-        extra={
-          <span className="card-meta">
-            {[formatDate(post.published_at), post.event_title || post.program_title].filter(Boolean).join(' · ')}
-          </span>
-        }
-      />
     </article>
   );
 }
 
 export function MediaItemCard({ item, deleteAction }) {
   return (
-    <article className="entity-card card-media">
-      <img className="card-photo" src={item.url} alt={item.alt} />
+    <article className="entity-card">
+      <Shot src={item.url} alt={item.alt} />
 
-      <h3>{item.caption || item.alt}</h3>
-      <p className="card-meta">{item.album}</p>
+      <div className="card-info">
+        <p className="card-meta">{item.album}</p>
 
-      <Actions
-        item={item}
-        viewHref="/gallery"
-        editHref={`/admin/media/${item.id}`}
-        deleteAction={deleteAction}
-        deleteLabel="Remove"
-        extra={<span className="card-meta">Order {item.sort_order}</span>}
-      />
+        <h3>{item.caption || item.alt}</h3>
+
+        <Actions
+          item={item}
+          viewHref="/gallery"
+          editHref={`/admin/media/${item.id}`}
+          deleteAction={deleteAction}
+          deleteLabel="Remove"
+          extra={<span className="card-meta">Order {item.sort_order}</span>}
+        />
+      </div>
     </article>
   );
 }
@@ -157,44 +181,46 @@ export function MediaItemCard({ item, deleteAction }) {
 export function MessageItemCard({ message, markAction }) {
   return (
     <article className="entity-card">
-      <div className="entity-card-top">
-        <h3>{message.name}</h3>
-        <span className={message.status === 'new' ? 'pill pill-new card-status' : 'pill pill-draft card-status'}>
-          {message.status}
-        </span>
-      </div>
-
-      <p className="card-meta">{message.phone ? `${message.email} · ${message.phone}` : message.email}</p>
-      <p className="card-body card-body-pre">{message.body}</p>
-
-      <div className="card-foot">
-        <div className="card-note">
-          <span className="card-meta">
-            Received {formatDate(message.created_at, { hour: 'numeric', minute: '2-digit' })}
+      <div className="card-info">
+        <div className="entity-card-top">
+          <h3>{message.name}</h3>
+          <span className={message.status === 'new' ? 'pill pill-new card-status' : 'pill pill-draft card-status'}>
+            {message.status}
           </span>
         </div>
-        <div className="card-actions">
-          <a className="btn-ghost" href={`mailto:${message.email}`}>
-            Reply
-          </a>
-          {message.status !== 'read' ? (
-            <form action={markAction}>
-              <input type="hidden" name="id" value={message.id} />
-              <input type="hidden" name="status" value="read" />
-              <button className="btn-ghost" type="submit">
-                Mark read
-              </button>
-            </form>
-          ) : null}
-          {message.status !== 'archived' ? (
-            <form action={markAction}>
-              <input type="hidden" name="id" value={message.id} />
-              <input type="hidden" name="status" value="archived" />
-              <button className="btn-ghost" type="submit">
-                Archive
-              </button>
-            </form>
-          ) : null}
+
+        <p className="card-meta">{message.phone ? `${message.email} · ${message.phone}` : message.email}</p>
+        <p className="card-body card-body-pre">{message.body}</p>
+
+        <div className="card-foot">
+          <div className="card-note">
+            <span className="card-meta">
+              Received {formatDate(message.created_at, { hour: 'numeric', minute: '2-digit' })}
+            </span>
+          </div>
+          <div className="card-actions">
+            <a className="btn-ghost" href={`mailto:${message.email}`}>
+              Reply
+            </a>
+            {message.status !== 'read' ? (
+              <form action={markAction}>
+                <input type="hidden" name="id" value={message.id} />
+                <input type="hidden" name="status" value="read" />
+                <button className="btn-ghost" type="submit">
+                  Mark read
+                </button>
+              </form>
+            ) : null}
+            {message.status !== 'archived' ? (
+              <form action={markAction}>
+                <input type="hidden" name="id" value={message.id} />
+                <input type="hidden" name="status" value="archived" />
+                <button className="btn-ghost" type="submit">
+                  Archive
+                </button>
+              </form>
+            ) : null}
+          </div>
         </div>
       </div>
     </article>
