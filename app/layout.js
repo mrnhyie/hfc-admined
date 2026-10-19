@@ -1,4 +1,7 @@
 import '@fontsource-variable/manrope';
+// The full Fraunces file, not the wght-only one: SOFT and WONK are what give the
+// display face its character.
+import '@fontsource-variable/fraunces/full.css';
 import './globals.css';
 
 export async function generateMetadata() {

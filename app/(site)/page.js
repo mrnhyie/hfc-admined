@@ -52,6 +52,8 @@ export default async function HomePage() {
         <div className="hero-media">
           <img src={settings.hero_image_url} alt={settings.church_name} />
         </div>
+        <span className="blob blob-gold hero-blob-a drift" aria-hidden="true" />
+        <span className="blob blob-gold hero-blob-b" aria-hidden="true" />
         <div className="container">
           <div className="hero-copy">
             {settings.hero_eyebrow ? <div className="section-label">{settings.hero_eyebrow}</div> : null}
@@ -265,7 +267,7 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="section section-ivory" id="gallery">
+      <section className="section section-ivory" id="gallery" data-mark={initials(settings.church_name)}>
         <div className="container">
           <div className="section-head">
             <div>

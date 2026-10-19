@@ -27,7 +27,7 @@ export default function AdminNav({ churchName, userName }) {
           <Link
             key={item.href}
             href={item.href}
-            data-active={pathname === item.href || pathname.startsWith(`${item.href}/`)}
+            data-active={pathname === item.href || (item.href !== '/admin' && pathname.startsWith(`${item.href}/`))}
           >
             <MaterialIcon name={item.icon} />
             {item.label}

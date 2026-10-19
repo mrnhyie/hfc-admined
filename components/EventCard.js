@@ -7,13 +7,18 @@ export default function EventCard({ event, variant = 'archive' }) {
 
   if (variant === 'row') {
     const date = eventDateStack(event);
+    /* When the event has its own photograph the numeral is filled with it, so
+       the date carries the picture instead of sitting next to it. */
+    const fill = event.cover_url
+      ? { className: 'event-day event-day-fill', style: { backgroundImage: `url(${event.cover_url})` } }
+      : { className: 'event-day' };
     return (
       <Link className="event-row" href={href}>
         <div className="event-date">
-          <strong>
-            {date.day} {date.month}
-          </strong>
-          <span>{date.weekday}</span>
+          <strong {...fill}>{date.day}</strong>
+          <span>
+            {date.month} · {date.weekday}
+          </span>
         </div>
         <div>
           <h3>{event.title}</h3>
