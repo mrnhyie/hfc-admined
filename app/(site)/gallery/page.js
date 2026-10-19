@@ -18,7 +18,7 @@ export default async function GalleryPage({ searchParams }) {
     <main>
       <PageHead
         label={settings.gallery_kicker}
-        title="Life at *Highlife*"
+        title="Life at *Higherlife*"
         body="Photos from worship, fellowship, outreach and the church family."
       />
 

@@ -15,6 +15,10 @@ export default function SiteFooter({ settings }) {
   return (
     <footer className="site-footer">
       <div className="container">
+        <div className="footer-mark" aria-hidden="true">
+          {settings.church_short}
+        </div>
+
         <div className="footer-grid">
           <div>
             <div className="footer-brand">

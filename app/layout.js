@@ -2,7 +2,7 @@ import '@fontsource-variable/manrope';
 import './globals.css';
 
 export async function generateMetadata() {
-  const title = process.env.SITE_NAME || 'Highlife Family Chapel International';
+  const title = process.env.SITE_NAME || 'Higherlife Family Chapel International';
   return {
     title: {
       default: title,

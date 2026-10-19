@@ -5,11 +5,14 @@ import Emphasise from '@/components/Emphasise';
 import EventCard from '@/components/EventCard';
 import MaterialIcon from '@/components/MaterialIcon';
 import ProgramCard from '@/components/ProgramCard';
+import SpeakerCard from '@/components/SpeakerCard';
 import {
+  getFactCounts,
   getMedia,
   getPosts,
   getPrograms,
   getSettings,
+  getSpeakers,
   getUpcomingEvents,
 } from '@/lib/queries';
 import { socialLinks } from '@/lib/socials';
@@ -23,12 +26,14 @@ const initials = (name) =>
     .slice(0, 3);
 
 export default async function HomePage() {
-  const [settings, programs, events, posts, media] = await Promise.all([
+  const [settings, programs, events, posts, media, counts, speakers] = await Promise.all([
     getSettings(),
     getPrograms(),
     getUpcomingEvents(4),
     getPosts({ limit: 4 }),
     getMedia({ limit: 8 }),
+    getFactCounts(),
+    getSpeakers({ limit: 6 }),
   ]);
 
   const scheduled = programs.filter((program) => program.meeting_day);
@@ -37,11 +42,7 @@ export default async function HomePage() {
   const [nextEvent, ...laterEvents] = events;
   const [leadPost, ...otherPosts] = posts;
 
-  const facts = [
-    { label: settings.hero_badge_one_label, value: settings.hero_badge_one_value },
-    { label: settings.hero_badge_two_label, value: settings.hero_badge_two_value },
-    { label: 'Where we meet', value: settings.address },
-  ].filter((fact) => fact.label && fact.value);
+  const facts = counts;
 
   const socials = socialLinks(settings);
 
@@ -78,16 +79,14 @@ export default async function HomePage() {
       </section>
 
       {facts.length ? (
-        <section className="welcome-band">
-          <div className="container">
-            <div className="welcome-grid">
-              {facts.map((fact) => (
-                <div className="welcome-item" key={fact.label}>
-                  <strong>{fact.value}</strong>
-                  <span>{fact.label}</span>
-                </div>
-              ))}
-            </div>
+        <section className="fact-band" aria-label="The church in numbers">
+          <div className="container fact-grid">
+            {facts.map((fact) => (
+              <div className="fact" key={fact.label}>
+                <strong>{fact.value}</strong>
+                <span>{fact.label}</span>
+              </div>
+            ))}
           </div>
         </section>
       ) : null}
@@ -243,6 +242,28 @@ export default async function HomePage() {
           )}
         </div>
       </section>
+
+      {speakers.length ? (
+        <section className="section" id="teachers">
+          <div className="container">
+            <div className="section-head">
+              <div>
+                <div className="section-label">Who teaches</div>
+                <h2 className="section-title">Preaching team</h2>
+              </div>
+              <Link className="section-link" href="/content">
+                All teaching
+                <MaterialIcon name="arrow_forward" />
+              </Link>
+            </div>
+            <div className="speaker-grid">
+              {speakers.map((speaker) => (
+                <SpeakerCard key={speaker.speaker} speaker={speaker} />
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section section-ivory" id="gallery">
         <div className="container">

@@ -1,4 +1,4 @@
-# Highlife Family Chapel International — website
+# Higherlife Family Chapel International — website
 
 Next.js (JavaScript, App Router) site with an admin portal for programmes, events and content.
 Public pages read from Postgres; everything is edited at `/admin`.

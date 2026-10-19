@@ -1,4 +1,4 @@
--- Highlife Family Chapel International — database schema
+-- Higherlife Family Chapel International — database schema
 -- Idempotent: safe to re-run (scripts/migrate.mjs executes this file).
 
 create extension if not exists pgcrypto;

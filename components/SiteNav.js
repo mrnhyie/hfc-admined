@@ -13,7 +13,7 @@ const LINKS = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
+export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel, serviceLine, address }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -60,6 +60,15 @@ export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
           )}
         </nav>
       </div>
+
+      {serviceLine || address ? (
+        <div className="nav-meta">
+          <div className="container nav-meta-row">
+            {serviceLine ? <span className="nav-meta-strong">{serviceLine}</span> : null}
+            {address ? <span>{address}</span> : null}
+          </div>
+        </div>
+      ) : null}
     </header>
   );
 }
