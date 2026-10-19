@@ -9,6 +9,14 @@ export const metadata = { title: 'Contact' };
 export default async function ContactPage() {
   const [settings, programs] = await Promise.all([getSettings(), getPrograms({ scheduleOnly: true })]);
   const socials = socialLinks(settings);
+  // An empty embed field is not a missing map — most locations are already
+  // describable by their address, and then the pin can never drift from the
+  // text an admin edits in Site settings.
+  const mapSrc =
+    settings.maps_embed_url ||
+    (settings.address
+      ? `https://maps.google.com/maps?q=${encodeURIComponent(settings.address)}&z=16&output=embed`
+      : '');
 
   return (
     <main>
@@ -88,10 +96,10 @@ export default async function ContactPage() {
               </>
             ) : null}
 
-            {settings.maps_embed_url ? (
+            {mapSrc ? (
               <div className="map-wrap">
                 <iframe
-                  src={settings.maps_embed_url}
+                  src={mapSrc}
                   width="100%"
                   height="380"
                   style={{ border: 0, display: 'block' }}

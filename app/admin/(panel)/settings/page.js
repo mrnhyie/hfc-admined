@@ -118,7 +118,9 @@ export default async function AdminSettingsPage() {
             {field('email', 'Email')}
             {field('service_note', 'Weekly service note')}
           </div>
-          {field('maps_embed_url', 'Google Maps embed URL')}
+          {field('maps_embed_url', 'Google Maps embed URL', {
+            hint: 'Leave empty to pin the address above. Paste a full embed URL only if the automatic pin is off.',
+          })}
         </div>
 
         <div className="form-group">
