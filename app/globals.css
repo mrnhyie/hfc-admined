@@ -275,7 +275,11 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .section-plum h2, .section-plum h3 { color: #fff }
 
+/* The eyebrow sits on a plum plate in these three, where gold-dark is
+   indistinguishable from the background. */
 .section-plum .section-label,
+.hero .section-label,
+.page-hero .section-label,
 .mission .section-label { color: var(--gold) }
 
 .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--line) }
@@ -394,33 +398,55 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .schedule-list { display: grid; gap: 12px }
 
+/* Light is the default because two of the three schedule lists sit on paper;
+   the homepage band overrides the palette from .section-plum below. */
 .schedule-item {
     display: grid;
     grid-template-columns: 150px minmax(0, 1fr) auto;
     align-items: center;
     gap: 24px;
-    padding: 22px 26px;
-    background: rgba(255, 255, 255, .06);
-    border: 1px solid rgba(255, 255, 255, .14);
+    padding: 20px 24px;
+    background: #fff;
+    border: 1px solid var(--line);
     border-radius: 16px;
-    transition: background-color .2s ease, border-color .2s ease
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow .2s ease, border-color .2s ease, transform .2s ease
 }
 
-.schedule-item:hover { background: rgba(255, 255, 255, .11); border-color: rgba(255, 255, 255, .26) }
+.schedule-item:hover {
+    border-color: var(--plum-soft);
+    box-shadow: var(--shadow)
+}
 
-.schedule-day { font-size: .72rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: var(--gold) }
+.schedule-day { font-size: .72rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; color: var(--gold-dark) }
 
-.schedule-item h3 { margin: 0 0 4px; font-size: 1.25rem; color: #fff }
+.schedule-item h3 { margin: 0 0 4px; font-size: 1.25rem; color: var(--plum-dark) }
 
 .schedule-item h3 a { color: inherit }
 
-.schedule-item p { margin: 0; max-width: 560px; color: rgba(255, 255, 255, .74); font-size: .92rem }
+.schedule-item p { margin: 0; max-width: 560px; color: var(--body); font-size: .92rem }
 
 .schedule-when { display: flex; align-items: center; gap: 16px }
 
-.schedule-time { font-weight: 800; font-size: .95rem; white-space: nowrap; color: #fff }
+.schedule-time { font-weight: 800; font-size: .95rem; white-space: nowrap; color: var(--plum) }
 
-.schedule-when .link-inline { color: var(--gold) }
+.schedule-when .link-inline { color: var(--plum) }
+
+/* Colours only — layout stays in the base rule so the mobile grid override
+   keeps working on this higher-specificity band. */
+.section-plum .schedule-item { background: rgba(255, 255, 255, .06); border-color: rgba(255, 255, 255, .14); box-shadow: none }
+
+.section-plum .schedule-item:hover { background: rgba(255, 255, 255, .11); border-color: rgba(255, 255, 255, .26) }
+
+.section-plum .schedule-day { color: var(--gold) }
+
+.section-plum .schedule-item h3 { color: #fff }
+
+.section-plum .schedule-item p { color: rgba(255, 255, 255, .74) }
+
+.section-plum .schedule-time { color: #fff }
+
+.section-plum .schedule-when .link-inline { color: var(--gold) }
 
 .section-plum .btn-line { border-color: rgba(255, 255, 255, .45); color: #fff }
 
@@ -960,11 +986,24 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     /* The 640px rule hides the bar CTA; inside the open menu it belongs again. */
     .nav-links.open .nav-cta { display: inline-flex; margin: 18px 0 0; justify-content: center }
 
-    /* On a phone the photograph is only a strip at the top: the copy needs the
-       solid plum plate below it, or the body text crosses a bright pew. */
-    .hero::before { background: linear-gradient(180deg, rgba(33, 8, 39, .5) 0%, rgba(33, 8, 39, .97) 19%, var(--plum-deep) 32%) }
+    /* A wash over the full-bleed photograph left the picture as a dim strip on a
+       phone, so the photo becomes a band of its own and the copy sits on the
+       solid plum plate below it. */
+    .hero { display: flex; flex-direction: column; padding: 0 0 clamp(88px, 22vw, 128px) }
+
+    .hero-media { position: relative; inset: auto; flex: none; height: clamp(210px, 60vw, 300px) }
+
+    .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33, 8, 39, .16) 0%, rgba(33, 8, 39, 0) 42%, var(--plum-deep) 100%) }
+
+    .hero::before { display: none }
+
+    .hero .container { padding-top: 32px }
 
     .hero-info { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+
+    /* Three cells across two columns otherwise leave a hole at the end of the
+       band. */
+    .hero-info > .info-cell:nth-child(3):last-child { grid-column: 1 / -1 }
 
     .info-cell { flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px }
 
@@ -1004,7 +1043,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .nav-cta { display: none }
 
-    .hero { padding: 72px 0 130px }
+    .hero { padding: 0 0 118px }
 
     .hero h1 { font-size: clamp(2.1rem, 8.4vw, 2.9rem); margin: 16px 0 20px }
 
@@ -2399,49 +2438,66 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 @media(max-width:900px) {
     .admin-shell { grid-template-columns: 1fr }
 
+    /* The rail becomes one scrolling chip bar. Wrapping it instead stacked the
+       brand, seven links and the user row above the dashboard, pushing the
+       first stat card a full screen down. */
     .admin-side {
         position: static;
+        /* min-width: auto would floor the 1fr grid track at the chip row's
+           min-content width and stretch the whole page past the viewport. */
+        min-width: 0;
         height: auto;
-        flex-direction: row;
+        flex-flow: row nowrap;
         align-items: center;
-        flex-wrap: wrap;
-        gap: 14px 20px;
-        padding: 14px 20px;
+        gap: 12px;
+        padding: 10px 14px;
         border-right: 0;
         border-bottom: 1px solid var(--line)
     }
 
-    /* The rail becomes a bar, so the group headings drop out and every link joins
-       one wrapping row. */
+    .admin-brand { flex: none }
+
     .admin-nav-scroll {
-        flex: 0 1 auto;
-        flex-flow: row wrap;
-        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        flex-flow: row nowrap;
         gap: 6px;
         margin: 0;
         padding: 0;
-        overflow: visible
+        overflow-x: auto;
+        overflow-y: hidden;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch
+    }
+
+    .admin-nav-scroll::-webkit-scrollbar { display: none }
+
+    /* A soft edge is the only affordance that a chip row continues off-screen. */
+    .admin-nav-scroll {
+        mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent);
+        -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent)
     }
 
     .admin-nav-group { display: contents }
 
     .admin-nav-group h2 { display: none }
 
-    .admin-nav { flex-direction: row; flex-wrap: wrap; gap: 6px }
+    .admin-nav { flex-flow: row nowrap; gap: 6px }
 
-    .admin-nav a { padding: 8px 12px }
+    .admin-nav a { flex: none; padding: 8px 12px; white-space: nowrap }
 
     .admin-side-foot {
+        flex: none;
         margin-top: 0;
-        margin-left: auto;
         padding-top: 0;
         border-top: 0
     }
 
-    /* The user row stays because sign-out lives inside it; only the name is capped. */
-    .admin-user-text { max-width: 132px }
+    /* The avatar and sign-out are all that fits a 40px bar; the name is already
+       in the dashboard heading. */
+    .admin-user-text { display: none }
 
-    .admin-topbar { padding: 12px 20px }
+    .admin-topbar { padding: 12px 16px }
 
     .admin-search { flex: 1 1 auto }
 
@@ -2453,7 +2509,14 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 @media(max-width:640px) {
     .admin-main { padding: 20px 16px 48px }
 
+    /* The mark already identifies the app; the chips need the width. */
+    .admin-brand-name { display: none }
+
     .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+
+    /* Two columns at phone width leave no room for "Sermons & news" on one
+       line; wrapping beats ellipsising it. */
+    .admin-stat .label { letter-spacing: .05em; white-space: normal }
 
     /* Title and status are the two columns that answer "what is it, is it
        live"; the date is one click away on the list screen. */
@@ -2461,4 +2524,11 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     .admin-table td:nth-child(2) { display: none }
 
     .form-row-2 { grid-template-columns: 1fr }
+
+    /* A 16:9 cover plate made every list row taller than the phone is wide. */
+    .card-shot { aspect-ratio: auto; height: 132px }
+
+    .card-shot-day { font-size: 32px }
+
+    .card-info { padding: 14px 16px 16px; gap: 6px }
 }
