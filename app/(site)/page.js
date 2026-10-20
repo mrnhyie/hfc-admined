@@ -17,13 +17,19 @@ import {
 } from '@/lib/queries';
 import { socialLinks } from '@/lib/socials';
 
-const initials = (name) =>
-  (name || '')
-    .split(/\s+/)
-    .filter((word) => /[a-z]/i.test(word))
-    .map((word) => word[0].toUpperCase())
-    .join('')
-    .slice(0, 3);
+/* Standing invitations rather than church content: these are the three doors
+   into the site, so they live in code next to the nav, not in the database. */
+const AUDIENCES = [
+  { icon: 'groups', tone: 'plum', title: 'For You', note: 'Grow in faith and purpose.', href: '/content' },
+  {
+    icon: 'auto_stories',
+    tone: 'gold',
+    title: 'For Your Family',
+    note: 'Resources and support for every stage.',
+    href: '/programs',
+  },
+  { icon: 'favorite', tone: 'plum', title: 'For Our Community', note: 'Love God, love people.', href: '/contact' },
+];
 
 export default async function HomePage() {
   const [settings, programs, events, posts, media, counts, speakers] = await Promise.all([
@@ -52,8 +58,6 @@ export default async function HomePage() {
         <div className="hero-media">
           <img src={settings.hero_image_url} alt={settings.church_name} />
         </div>
-        <span className="blob blob-gold hero-blob-a drift" aria-hidden="true" />
-        <span className="blob blob-gold hero-blob-b" aria-hidden="true" />
         <div className="container">
           <div className="hero-copy">
             {settings.hero_eyebrow ? <div className="section-label">{settings.hero_eyebrow}</div> : null}
@@ -67,15 +71,93 @@ export default async function HomePage() {
                 <MaterialIcon name="arrow_forward" />
               </Link>
               <Link className="btn btn-outline" href="/programs">
-                Discover our church
+                Explore our church
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="hero-info-wrap">
+        <div className="container">
+          <div className="hero-info">
+            <div className="info-cell">
+              <span className="info-well">
+                <MaterialIcon name="calendar_today" />
+              </span>
+              <div>
+                <span className="info-label">{settings.hero_badge_one_label}</span>
+                <strong>{settings.hero_badge_one_value}</strong>
+              </div>
+            </div>
+            <div className="info-cell">
+              <span className="info-well">
+                <MaterialIcon name="place" />
+              </span>
+              <div>
+                <span className="info-label">Our location</span>
+                <strong>{settings.address}</strong>
+              </div>
+            </div>
             {settings.hero_note ? (
-              <div className="hero-note">
-                <span className="note-line" />
-                <span>{settings.hero_note}</span>
+              <div className="info-cell">
+                <span className="info-well">
+                  <MaterialIcon name="groups" />
+                </span>
+                <div>
+                  <span className="info-label">{settings.hero_badge_two_label}</span>
+                  <strong>{settings.hero_note}</strong>
+                </div>
               </div>
             ) : null}
+          </div>
+        </div>
+      </div>
+
+      <section className="section belong" id="belong">
+        <div className="container belong-grid">
+          <div className="belong-head">
+            <div className="section-label">{settings.hero_badge_two_label}</div>
+            <h2>
+              Find your place
+              <br />
+              in the family.
+            </h2>
+            <span className="rule-gold" aria-hidden="true" />
+          </div>
+          <div className="belong-cards">
+            {AUDIENCES.map((item) => (
+              <Link className="belong-card" key={item.title} href={item.href}>
+                <span className={`belong-well is-${item.tone}`}>
+                  <MaterialIcon name={item.icon} />
+                </span>
+                <span className="belong-text">
+                  <strong>{item.title}</strong>
+                  <span>{item.note}</span>
+                </span>
+                <MaterialIcon name="arrow_forward" className="belong-arrow" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="mission">
+        <div className="container mission-inner">
+          <div className="mission-media">
+            <img
+              src={media[0]?.url || settings.about_image_url}
+              alt={media[0]?.alt || settings.church_short}
+              loading="lazy"
+            />
+          </div>
+          <div className="mission-copy">
+            <div className="section-label">Our mission</div>
+            <p>{settings.about_tag}</p>
+            <Link className="link-inline" href="/programs">
+              Learn more
+              <MaterialIcon name="arrow_forward" />
+            </Link>
           </div>
         </div>
       </section>
@@ -97,15 +179,11 @@ export default async function HomePage() {
         <div className="container story-grid">
           <div className="story-image">
             <img src={settings.about_image_url} alt={settings.church_short} loading="lazy" />
-            {settings.about_tag ? (
-              <div className="image-tag">
-                <Emphasise text={settings.about_tag} />
-              </div>
-            ) : null}
           </div>
           <div className="story-copy">
             <div className="section-label">{settings.about_kicker}</div>
             <h2>{settings.about_title}</h2>
+            <span className="rule-gold" aria-hidden="true" />
             <p>{settings.about_body}</p>
             <blockquote className="pull-quote">{settings.about_quote}</blockquote>
             <div className="signature">{settings.about_signature}</div>
@@ -267,7 +345,7 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="section section-ivory" id="gallery" data-mark={initials(settings.church_name)}>
+      <section className="section section-ivory" id="gallery">
         <div className="container">
           <div className="section-head">
             <div>
@@ -305,7 +383,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="visit-cta" data-mark={initials(settings.church_short)}>
+      <section className="visit-cta">
         <div className="container visit-inner">
           <div>
             <h2>{settings.cta_title}</h2>

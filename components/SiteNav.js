@@ -13,7 +13,19 @@ const LINKS = [
   { href: '/contact', label: 'Contact' },
 ];
 
-export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel, serviceLine, address }) {
+/* Two lines so the logo stays the height of the bar instead of pushing the
+   whole header taller. */
+function Wordmark({ name }) {
+  const words = (name || '').split(' ');
+  return (
+    <span className="brand-word">
+      <span>{words[0]}</span>
+      {words.length > 1 ? <span>{words.slice(1).join(' ')}</span> : null}
+    </span>
+  );
+}
+
+export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -21,25 +33,15 @@ export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel, servi
     setOpen(false);
   }, [pathname]);
 
-  const isActive = (href) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isActive = (href) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
   return (
     <header className="site-header">
       <div className="container nav">
         <Link className="brand" href="/">
           <img src={logoUrl} alt="" />
-          <span>{churchName}</span>
+          <Wordmark name={churchName} />
         </Link>
-
-        <button
-          className="nav-toggle"
-          aria-label={open ? 'Close menu' : 'Open menu'}
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <MaterialIcon name={open ? 'close' : 'menu'} className="msvg-lg" />
-        </button>
 
         <nav className={open ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">
           {LINKS.map((link) => (
@@ -54,21 +56,21 @@ export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel, servi
             </a>
           ) : (
             <Link className="btn btn-gold nav-cta" href="/contact">
-              Plan a visit
-              <MaterialIcon name="arrow_outward" />
+              Plan your visit
+              <MaterialIcon name="arrow_forward" />
             </Link>
           )}
         </nav>
-      </div>
 
-      {serviceLine || address ? (
-        <div className="nav-meta">
-          <div className="container nav-meta-row">
-            {serviceLine ? <span className="nav-meta-strong">{serviceLine}</span> : null}
-            {address ? <span>{address}</span> : null}
-          </div>
-        </div>
-      ) : null}
+        <button
+          className="nav-toggle"
+          aria-label={open ? 'Close menu' : 'Open menu'}
+          aria-expanded={open}
+          onClick={() => setOpen(!open)}
+        >
+          <MaterialIcon name={open ? 'close' : 'menu'} className="msvg-lg" />
+        </button>
+      </div>
     </header>
   );
 }

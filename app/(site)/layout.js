@@ -14,12 +14,6 @@ export default async function SiteLayout({ children }) {
         logoUrl={settings.logo_url}
         giveUrl={settings.give_url}
         giveLabel={settings.give_label}
-        serviceLine={
-          settings.hero_badge_one_label && settings.hero_badge_one_value
-            ? `${settings.hero_badge_one_label} · ${settings.hero_badge_one_value}`
-            : ''
-        }
-        address={settings.address}
       />
       {children}
       <SiteFooter settings={settings} />
