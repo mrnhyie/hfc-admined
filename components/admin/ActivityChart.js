@@ -48,7 +48,7 @@ export function MiniBars({ values }) {
             y={height - barHeight}
             width={barWidth}
             height={barHeight}
-            rx={barWidth / 2}
+            rx={1}
           />
         );
       })}
@@ -94,7 +94,7 @@ export function ActivityChart({ months, byKind, series }) {
                 y={axis.top + plotH - barHeight}
                 width={barWidth}
                 height={barHeight}
-                rx={barWidth / 2}
+                rx={2}
               />
             );
           })}
