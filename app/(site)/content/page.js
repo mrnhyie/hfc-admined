@@ -26,11 +26,12 @@ export default async function ContentPage({ searchParams }) {
   };
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={settings.content_kicker}
         title="Teaching, *news* & notes"
         body="Sermons, devotionals and announcements from our programmes and events."
+        art="crucifixion"
       />
 
       <section className="section">

@@ -78,12 +78,13 @@ export default async function ContentDetailPage({ params }) {
   }
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={`${POST_KIND_LABELS[post.kind] || post.kind} · ${formatDate(post.published_at)}`}
         title={post.title}
         body={post.excerpt}
         crumbs={[{ href: '/content', label: 'Content' }]}
+        art="crucifixion"
       />
 
       <section className="section">
@@ -121,7 +122,7 @@ export default async function ContentDetailPage({ params }) {
           {post.video_url ? (
             <div className="hero-actions">
               <a
-                className="btn btn-line"
+                className="btn btn-pill btn-pill-gold"
                 href={post.video_url}
                 target="_blank"
                 rel="noopener noreferrer"

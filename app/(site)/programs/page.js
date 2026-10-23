@@ -14,11 +14,12 @@ export default async function ProgramsPage() {
   const others = lead ? rest.filter((program) => program.id !== lead.id) : rest;
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={settings.services_kicker}
         title="Programs & *ministries*"
         body="Everything the church runs, from weekly services to conferences and outreach."
+        art="good-shepherd"
       />
 
       {scheduled.length ? (
@@ -37,7 +38,7 @@ export default async function ProgramsPage() {
               ))}
             </div>
             <div className="hero-actions">
-              <Link className="btn btn-line" href="/contact">
+              <Link className="btn btn-pill btn-pill-plum" href="/contact">
                 Directions &amp; contact
                 <MaterialIcon name="place" />
               </Link>
@@ -55,7 +56,7 @@ export default async function ProgramsPage() {
                 <div className="section-label">Featured ministry</div>
                 <h2>{lead.title}</h2>
                 <p>{lead.summary}</p>
-                <Link className="btn btn-gold" href={`/programs/${lead.slug}`}>
+                <Link className="btn btn-pill btn-pill-gold" href={`/programs/${lead.slug}`}>
                   Read more
                   <MaterialIcon name="arrow_forward" />
                 </Link>

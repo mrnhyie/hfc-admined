@@ -50,12 +50,13 @@ export default async function ProgramDetailPage({ params }) {
   }
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={label(program.category)}
         title={program.title}
         body={program.summary}
         crumbs={[{ href: '/programs', label: 'Programs' }]}
+        art="good-shepherd"
       />
 
       <section className="section">

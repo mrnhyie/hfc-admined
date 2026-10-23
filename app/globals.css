@@ -88,9 +88,40 @@ h2 { font-size: clamp(2rem, 4vw, 3.4rem) }
 
 h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
+/* The reference runs every heading on the hero's bold sans; Fraunces stays on
+   as the accent voice (script line, quotes, numerals, the church wordmarks). */
+main h1, main h2, main h3, main h4 {
+    font-family: var(--font-body);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.02em
+}
+
+main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
+
 ::selection { background: var(--gold); color: var(--gold-ink) }
 
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 3px }
+
+/* Gold on gold would vanish, so the gold pill swaps its ring for deep plum. */
+.btn-pill.btn-pill-gold:focus-visible { outline-color: var(--plum-deep) }
+
+.skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 100;
+    padding: 13px 20px;
+    border-radius: var(--radius-pill);
+    font-family: var(--font-body);
+    font-size: .85rem;
+    font-weight: 800;
+    color: var(--gold-ink);
+    background: var(--gold);
+    transform: translateY(-200%)
+}
+
+.skip-link:focus-visible { transform: none }
 
 .container { width: min(var(--max), calc(100% - var(--gutter))); margin-inline: auto }
 
@@ -151,7 +182,8 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 .nav-links > a:not(.nav-cta):hover::after,
 .nav-links > a[data-active="true"]::after { right: 0 }
 
-.nav-cta { margin-left: 6px; padding: 12px 22px; font-size: .88rem; border-radius: var(--radius-pill) }
+/* Shape comes from the pill classes; this only offsets it from the links. */
+.nav-cta { margin-left: 6px }
 
 /* Bare icon at the end of the bar — no box around it. */
 .nav-toggle { display: none; margin-left: auto; padding: 6px; color: #fff; background: none; border: 0 }
@@ -166,6 +198,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     padding: 15px 24px;
     border: 1px solid transparent;
     border-radius: 12px;
+    font-family: inherit;
     font-weight: 800;
     font-size: .95rem;
     letter-spacing: -.01em;
@@ -173,23 +206,9 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     transition: transform .18s ease, background-color .18s ease, color .18s ease, border-color .18s ease, box-shadow .18s ease
 }
 
+.btn:disabled { opacity: .6; cursor: default; transform: none }
+
 .btn .msvg { width: 18px; height: 18px }
-
-.btn-gold { background: var(--gold); color: var(--gold-ink); box-shadow: 0 12px 26px -16px rgba(244, 196, 0, .95) }
-
-.btn-gold:hover { background: var(--gold-bright); transform: translateY(-2px) }
-
-.btn-plum { background: var(--plum); color: #fff }
-
-.btn-plum:hover { background: var(--plum-dark); transform: translateY(-2px) }
-
-.btn-outline { border-color: rgba(255, 255, 255, .45); color: #fff }
-
-.btn-outline:hover { background: rgba(255, 255, 255, .12); border-color: rgba(255, 255, 255, .8) }
-
-.btn-line { border-color: var(--plum); color: var(--plum) }
-
-.btn-line:hover { background: var(--plum); color: #fff }
 
 /* The reference's one button shape: a wide pill with a hairline edge and small
    caps inside. The padding keeps the tap target where the template's does not. */
@@ -409,7 +428,19 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .fact { text-align: center }
 
-.fact strong { display: block; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-size: 2.2rem; line-height: 1; color: var(--plum) }
+/* Italic display figures: the art voice of the site, kept clean with SOFT and
+   WONK at zero so the digits read as type, not doodles. */
+.fact strong {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-size: clamp(2.6rem, 3.4vw, 3.2rem);
+    line-height: 1;
+    letter-spacing: -.01em;
+    color: var(--plum)
+}
 
 .fact span { display: block; margin-top: 9px; font-size: .68rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--gold-dark) }
 
@@ -495,10 +526,6 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 .section-plum .schedule-time { color: #fff }
 
 .section-plum .schedule-when .link-inline { color: var(--gold) }
-
-.section-plum .btn-line { border-color: rgba(255, 255, 255, .45); color: #fff }
-
-.section-plum .btn-line:hover { background: #fff; color: var(--plum) }
 
 /* ---------- ministries ---------- */
 
@@ -608,7 +635,24 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .event-date { display: grid; gap: 6px; justify-items: center; text-align: center }
 
-.event-day { display: grid; place-items: center; width: 58px; height: 58px; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-size: 1.5rem; line-height: 1; color: #fff; background: var(--plum); border-radius: 14px }
+/* A round date seal rather than a rounded square; the italic figures give it
+   the same hand as the fact numerals. */
+.event-day {
+    display: grid;
+    place-items: center;
+    width: 60px;
+    height: 60px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-size: 1.65rem;
+    line-height: 1;
+    letter-spacing: -.01em;
+    color: #fff;
+    background: var(--plum);
+    border-radius: 50%
+}
 
 .event-date span { color: var(--gold-dark); font-size: .68rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase }
 
@@ -742,6 +786,45 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .visit-cta .btn-pill:not(.btn-pill-gold):hover { background: #fff; border-color: #fff; color: var(--plum) }
 
+/* ---------- bulletin watermarks ---------- */
+
+/* Faint felt-tip line art from the children's bulletin. The drawings are black
+   on white: multiply drops the paper on light bands; the plum bands invert the
+   plate and screen the strokes back so they read as chalk under the copy. */
+.watermark {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background-repeat: no-repeat;
+    background-position: right -3vw bottom -8%;
+    background-size: min(640px, 56vw) auto;
+    opacity: .08;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    user-select: none
+}
+
+.page-hero,
+.mission,
+.section-story { position: relative; isolation: isolate }
+
+.page-hero .watermark,
+.mission .watermark {
+    filter: invert(1);
+    mix-blend-mode: screen;
+    opacity: .11
+}
+
+.page-hero .container,
+.mission-inner,
+.story-grid { position: relative; z-index: 1 }
+
+.page-hero .watermark { background-position: right -8vw bottom -6%; background-size: min(700px, 62vw) auto }
+
+.mission .watermark { background-position: right -2vw bottom -18%; background-size: min(620px, 54vw) auto }
+
+.section-story .watermark { background-position: right -3vw bottom -5%; background-size: min(620px, 49vw) auto }
+
 /* ---------- page hero + body ---------- */
 
 /* Inner pages open on the same plate as the homepage hero: centred caps eyebrow,
@@ -815,28 +898,61 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .contact-details p { color: var(--muted) }
 
-.contact-form { display: grid; gap: 18px; padding: clamp(24px, 3vw, 34px); background: #fff; border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-sm) }
+/* The weekly list shares the narrow details column, where the three-column
+   desktop row left the title only a few words wide. Day becomes its own line
+   and the time sits beside the title. */
+.contact-details .schedule-item { grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px }
+.contact-details .schedule-day { grid-column: 1 / -1 }
+
+.contact-form { display: grid; gap: 20px }
 
 /* Scoped to the public contact form: the admin fields are p.field wrappers around
-   .input/.textarea, and these rules were painting every dashboard field ivory. */
-.contact-form .field { display: grid; gap: 7px; margin: 0; font-weight: 800; font-size: .85rem }
+   .input/.textarea, and these rules were painting every dashboard field ivory.
+   Field anatomy follows the Material sample: title above, outlined control with
+   16px side padding, and the error line sitting directly under the control. */
+.contact-form .field {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .01em;
+    color: var(--ink)
+}
+
+.contact-form .field > label { transition: color .18s ease }
+.contact-form .field:focus-within > label { color: var(--plum) }
 
 .contact-form .field input,
 .contact-form .field textarea {
     width: 100%;
-    padding: 13px 15px;
+    padding: 15px 16px;
+    font-family: inherit;
+    font-size: 1rem;
     font-weight: 500;
+    line-height: 1.45;
     color: var(--ink);
-    background: var(--ivory);
+    background: #fff;
     border: 1px solid var(--line);
-    border-radius: 12px;
-    transition: border-color .18s ease, box-shadow .18s ease, background-color .18s ease
+    border-radius: var(--radius-pill);
+    transition: border-color .18s ease, box-shadow .18s ease
 }
 
-.contact-form .field input:focus,
-.contact-form .field textarea:focus { outline: 0; background: #fff; border-color: var(--gold); box-shadow: 0 0 0 4px rgba(244, 196, 0, .2) }
+.contact-form .field input::placeholder,
+.contact-form .field textarea::placeholder { color: var(--muted); opacity: 1 }
 
-.contact-form .field textarea { min-height: 150px; resize: vertical }
+/* Plum, not gold: a gold ring on a white field is only ~1.7:1. */
+.contact-form .field input:focus,
+.contact-form .field textarea:focus { outline: 0; border-color: var(--plum); box-shadow: 0 0 0 3px rgba(84, 16, 95, .14) }
+
+.contact-form .field input[aria-invalid="true"],
+.contact-form .field textarea[aria-invalid="true"] { border-color: #b91c1c }
+
+/* A pill would clip the first line, so the message box keeps a large radius. */
+.contact-form .field textarea { min-height: 150px; border-radius: 22px; resize: vertical }
+
+/* The admin error chip is too heavy under a field; public errors are a plain line. */
+.contact-form .form-error { margin: 0; padding: 0; border: 0; background: none; color: #b91c1c; font-size: .8rem; font-weight: 600 }
 
 .notice { padding: 14px 16px; background: #eaf6e9; color: #1d5a2b; border-radius: 12px; font-weight: 700 }
 
@@ -925,9 +1041,9 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .footer-social { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none }
 
-.footer-social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: #fff; border: 1px solid rgba(255, 255, 255, .18); transition: background-color .18s ease, border-color .18s ease, color .18s ease }
+.footer-social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: #fff; border: 1px solid rgba(255, 255, 255, .18); transition: transform .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease, box-shadow .18s ease }
 
-.footer-social a:hover { color: var(--gold-ink); background: var(--gold); border-color: var(--gold) }
+.footer-social a:hover { color: var(--gold-ink); background: var(--gold); border-color: var(--gold); transform: translateY(-4px); box-shadow: 0 14px 22px -14px rgba(244, 196, 0, .8) }
 
 .footer-social svg { width: 17px; height: 17px }
 
@@ -935,11 +1051,13 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .footer-col h4 { margin-bottom: 8px; font-family: var(--font-body); font-size: .72rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--gold) }
 
-.footer-col a, .footer-col p { margin: 0; font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere }
+/* Direct children only: the social tiles live deeper in the list and would
+   otherwise inherit the link gold that erases them on their own gold hover. */
+.footer-col > a, .footer-col p { margin: 0; font-size: .9rem; line-height: 1.5; overflow-wrap: anywhere }
 
-.footer-col a { color: rgba(255, 255, 255, .78); transition: color .18s ease }
+.footer-col > a { color: rgba(255, 255, 255, .78); transition: color .18s ease }
 
-.footer-col a:hover { color: var(--gold) }
+.footer-col > a:hover { color: var(--gold) }
 
 .footer-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding-top: 26px; font-size: .82rem }
 
@@ -1021,6 +1139,10 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     .mission-inner { grid-template-columns: minmax(0, 260px) minmax(0, 1fr) }
 }
 
+@keyframes nav-sheet-in {
+    from { opacity: 0; transform: translateY(-8px) }
+}
+
 @media (max-width: 900px) {
     :root { --gutter: 36px }
 
@@ -1030,30 +1152,50 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .nav-links > a:not(.nav-cta) { display: none }
 
-    .nav-toggle { display: grid; place-items: center }
+    .nav-toggle { display: grid; place-items: center; width: 48px; height: 48px; padding: 0 }
 
-    /* Anchored to the bottom of the header itself, so the drop-down clears the
-       bar whatever its height. Solid plum: it drops over photography. */
+    /* The menu is a full-height sheet below the bar, not a drop-down: one
+       56px row per link, a full-width CTA, and the safe-area inset, so every
+       target clears the 48px touch minimum Material asks for. */
     .nav-links.open {
-        position: absolute;
-        top: 100%;
-        inset-inline: 0;
+        position: fixed;
+        inset: 71px 0 0 0;
         display: flex;
         flex-direction: column;
+        /* The desktop rule centres its links; the sheet must start at the bar. */
+        justify-content: flex-start;
         align-items: stretch;
-        gap: 2px;
-        padding: 18px 24px 24px;
-        background: var(--plum-deep);
-        border-bottom: 1px solid rgba(255, 255, 255, .14);
-        box-shadow: var(--shadow-lg)
+        gap: 0;
+        padding: 8px var(--gutter) calc(30px + env(safe-area-inset-bottom));
+        /* A smoked-plum glass over the page, not an opaque slab. The alpha is
+           kept high enough that white links stay legible without the blur. */
+        background: rgba(33, 8, 39, .88);
+        -webkit-backdrop-filter: blur(22px) saturate(1.35);
+        backdrop-filter: blur(22px) saturate(1.35);
+        border-top: 1px solid rgba(255, 255, 255, .08);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        animation: nav-sheet-in .2s ease
     }
 
-    .nav-links.open > a:not(.nav-cta) { display: block; padding: 12px 0; font-size: 1rem; color: #fff; border-bottom: 1px solid rgba(255, 255, 255, .1) }
+    .nav-links.open > a:not(.nav-cta) {
+        display: flex;
+        align-items: center;
+        min-height: 56px;
+        padding: 0;
+        font-size: 1.02rem;
+        font-weight: 700;
+        color: #fff;
+        border-bottom: 1px solid rgba(255, 255, 255, .12);
+        border-radius: 0
+    }
+
+    .nav-links.open > a[data-active="true"] { color: var(--gold) }
 
     .nav-links.open > a:not(.nav-cta)::after { display: none }
 
-    /* The 640px rule hides the bar CTA; inside the open menu it belongs again. */
-    .nav-links.open .nav-cta { display: inline-flex; margin: 18px 0 0; justify-content: center }
+    /* The 640px rule hides the bar CTA; inside the open sheet it belongs again. */
+    .nav-links.open .nav-cta { display: inline-flex; margin: 26px 0 0; min-height: 52px; justify-content: center }
 
     /* The photograph stays behind the copy instead of becoming its own band, so
        the plate keeps the same shape on a phone as on a desk. */
@@ -1088,6 +1230,22 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .mission-media img { max-width: 320px }
 
+    /* On a phone the drawings sit closer to the type, so they widen to read as
+       stationery rather than a stamp, and give a little opacity back. */
+    .page-hero .watermark {
+        background-size: min(560px, 118vw) auto;
+        background-position: right -22% bottom -4%;
+        opacity: .09
+    }
+
+    .mission .watermark {
+        background-size: min(480px, 108vw) auto;
+        background-position: right -16% bottom -6%;
+        opacity: .1
+    }
+
+    .section-story .watermark { background-size: min(440px, 100vw) auto; background-position: right -14% bottom -2% }
+
     .section-head { margin-bottom: 34px }
 
     .section-note { max-width: none }
@@ -1118,6 +1276,9 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .fact-grid { grid-template-columns: 1fr 1fr; gap: 26px 18px }
 
+    /* Three facts in two columns would leave the last one hanging on the left. */
+    .fact:last-child:nth-child(odd) { grid-column: 1 / -1 }
+
     .story-grid { grid-template-columns: 1fr; gap: 32px }
 
     .story-image img { height: 380px }
@@ -1134,7 +1295,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .event-arrow { display: none }
 
-    .event-day { width: 50px; height: 50px; font-size: 1.3rem }
+    .event-day { width: 54px; height: 54px; font-size: 1.45rem }
 
     .event-row h3 { font-size: 1.05rem }
 
@@ -1177,7 +1338,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto }
 
-    *, *::before, *::after { transition: none !important }
+    *, *::before, *::after { transition: none !important; animation: none !important }
 }
 
 

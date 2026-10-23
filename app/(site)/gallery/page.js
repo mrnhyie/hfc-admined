@@ -15,11 +15,12 @@ export default async function GalleryPage({ searchParams }) {
   const names = albums.map((row) => row.album);
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={settings.gallery_kicker}
         title="Life at *Higherlife*"
         body="Photos from worship, fellowship, outreach and the church family."
+        art="blessing-children"
       />
 
       <section className="section">

@@ -26,13 +26,39 @@ export default function ContactForm() {
     <form className="contact-form" action={action}>
       <div className="field">
         <label htmlFor="name">Your name</label>
-        <input id="name" name="name" type="text" required defaultValue={values.name || ''} placeholder="Kofi Abban" />
-        {errors.name ? <div className="form-error">{errors.name}</div> : null}
+        <input
+          id="name"
+          name="name"
+          type="text"
+          required
+          defaultValue={values.name || ''}
+          placeholder="Kofi Abban"
+          aria-invalid={errors.name ? 'true' : undefined}
+          aria-describedby={errors.name ? 'name-error' : undefined}
+        />
+        {errors.name ? (
+          <div className="form-error" id="name-error">
+            {errors.name}
+          </div>
+        ) : null}
       </div>
       <div className="field">
         <label htmlFor="email">Email address</label>
-        <input id="email" name="email" type="email" required defaultValue={values.email || ''} placeholder="kofi@example.com" />
-        {errors.email ? <div className="form-error">{errors.email}</div> : null}
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          defaultValue={values.email || ''}
+          placeholder="kofi@example.com"
+          aria-invalid={errors.email ? 'true' : undefined}
+          aria-describedby={errors.email ? 'email-error' : undefined}
+        />
+        {errors.email ? (
+          <div className="form-error" id="email-error">
+            {errors.email}
+          </div>
+        ) : null}
       </div>
       <div className="field">
         <label htmlFor="phone">Phone (optional)</label>
@@ -40,10 +66,22 @@ export default function ContactForm() {
       </div>
       <div className="field">
         <label htmlFor="body">Message</label>
-        <textarea id="body" name="body" required defaultValue={values.body || ''} placeholder="How can we help?" />
-        {errors.body ? <div className="form-error">{errors.body}</div> : null}
+        <textarea
+          id="body"
+          name="body"
+          required
+          defaultValue={values.body || ''}
+          placeholder="How can we help?"
+          aria-invalid={errors.body ? 'true' : undefined}
+          aria-describedby={errors.body ? 'body-error' : undefined}
+        />
+        {errors.body ? (
+          <div className="form-error" id="body-error">
+            {errors.body}
+          </div>
+        ) : null}
       </div>
-      <button className="btn btn-plum" type="submit" disabled={isPending}>
+      <button className="btn btn-pill btn-pill-gold" type="submit" disabled={isPending}>
         {isPending ? 'Sending...' : 'Send message'}
       </button>
     </form>

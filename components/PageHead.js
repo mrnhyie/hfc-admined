@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import Emphasise from '@/components/Emphasise';
+import Watermark from '@/components/Watermark';
 
-export default function PageHead({ label, title, body, crumbs = [] }) {
+export default function PageHead({ label, title, body, crumbs = [], art }) {
   return (
     <header className="page-hero">
+      {art ? <Watermark art={art} /> : null}
       <div className="container">
         {crumbs.length ? (
           <div className="crumbs">

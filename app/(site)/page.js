@@ -6,6 +6,7 @@ import EventCard from '@/components/EventCard';
 import MaterialIcon from '@/components/MaterialIcon';
 import ProgramCard from '@/components/ProgramCard';
 import SpeakerCard from '@/components/SpeakerCard';
+import Watermark from '@/components/Watermark';
 import {
   getFactCounts,
   getLatestSermon,
@@ -55,7 +56,7 @@ export default async function HomePage() {
   const socials = socialLinks(settings);
 
   return (
-    <main id="home">
+    <main id="main">
       <section className="hero">
         <div className="hero-media">
           <img src={settings.hero_image_url} alt={settings.church_name} />
@@ -146,6 +147,7 @@ export default async function HomePage() {
       </section>
 
       <section className="mission">
+        <Watermark art="ascension" />
         <div className="container mission-inner">
           <div className="mission-media">
             <img
@@ -178,7 +180,8 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="section" id="about">
+      <section className="section section-story" id="about">
+        <Watermark art="blessing-children" />
         <div className="container story-grid">
           <div className="story-image">
             <img src={settings.about_image_url} alt={settings.church_short} loading="lazy" />
@@ -221,7 +224,7 @@ export default async function HomePage() {
               ))}
             </div>
             <div className="hero-actions">
-              <Link className="btn btn-line" href="/contact">
+              <Link className="btn btn-pill" href="/contact">
                 Directions &amp; contact
                 <MaterialIcon name="place" />
               </Link>
@@ -260,7 +263,7 @@ export default async function HomePage() {
                   <div className="section-label">{settings.services_kicker}</div>
                   <h2>{leadMinistry.title}</h2>
                   <p>{leadMinistry.summary}</p>
-                  <Link className="btn btn-gold" href={`/programs/${leadMinistry.slug}`}>
+                  <Link className="btn btn-pill btn-pill-gold" href={`/programs/${leadMinistry.slug}`}>
                     Explore this ministry
                     <MaterialIcon name="arrow_forward" />
                   </Link>

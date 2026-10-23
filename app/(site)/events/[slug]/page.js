@@ -65,12 +65,13 @@ export default async function EventDetailPage({ params }) {
   }
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={eventDateLine(event)}
         title={event.title}
         body={event.summary}
         crumbs={[{ href: '/events', label: 'Events' }]}
+        art="nativity"
       />
 
       <section className="section">
@@ -92,7 +93,7 @@ export default async function EventDetailPage({ params }) {
           ) : null}
 
           <div className="hero-actions">
-            <Link className="btn btn-line" href="/contact">
+            <Link className="btn btn-pill btn-pill-plum" href="/contact">
               Ask about this event
               <MaterialIcon name="mail" />
             </Link>

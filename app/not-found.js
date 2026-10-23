@@ -9,13 +9,14 @@ export default async function NotFound() {
 
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <SiteNav
         churchName={settings.church_short}
         logoUrl={settings.logo_url}
         giveUrl={settings.give_url}
         giveLabel={settings.give_label}
       />
-      <main>
+      <main id="main">
         <section className="page-hero">
           <div className="container">
             <div className="section-label">404</div>
@@ -25,7 +26,7 @@ export default async function NotFound() {
         </section>
         <section className="section">
           <div className="container">
-            <Link className="btn btn-plum" href="/">
+            <Link className="btn btn-pill btn-pill-plum" href="/">
               Go to home
               <MaterialIcon name="arrow_forward" />
             </Link>

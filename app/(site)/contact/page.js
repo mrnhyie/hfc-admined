@@ -19,11 +19,12 @@ export default async function ContactPage() {
       : '');
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={settings.contact_kicker}
         title="We would love to *hear from you*"
         body={settings.contact_body}
+        art="good-shepherd"
       />
 
       <section className="section">

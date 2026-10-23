@@ -8,6 +8,7 @@ export default async function SiteLayout({ children }) {
 
   return (
     <>
+      <a className="skip-link" href="#main">Skip to content</a>
       <SocialRail settings={settings} />
       <SiteNav
         churchName={settings.church_short}

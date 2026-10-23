@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import MaterialIcon from '@/components/MaterialIcon';
@@ -28,10 +28,32 @@ function Wordmark({ name }) {
 export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const toggleRef = useRef(null);
+  const navRef = useRef(null);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // The sheet covers the page, so the page beneath must hold still; Escape
+  // closes it and hands focus back to the toggle.
+  useEffect(() => {
+    if (!open) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    navRef.current?.querySelector('a')?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [open]);
 
   const isActive = (href) => (href === '/' ? pathname === '/' : pathname.startsWith(href));
 
@@ -43,19 +65,24 @@ export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
           <Wordmark name={churchName} />
         </Link>
 
-        <nav className={open ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">
+        <nav
+          id="site-nav"
+          ref={navRef}
+          className={open ? 'nav-links open' : 'nav-links'}
+          aria-label="Main navigation"
+        >
           {LINKS.map((link) => (
             <Link key={link.href} href={link.href} data-active={isActive(link.href)}>
               {link.label}
             </Link>
           ))}
           {giveUrl ? (
-            <a className="btn btn-gold nav-cta" href={giveUrl} target="_blank" rel="noopener noreferrer">
+            <a className="btn btn-pill btn-pill-gold nav-cta" href={giveUrl} target="_blank" rel="noopener noreferrer">
               {giveLabel}
               <MaterialIcon name="arrow_outward" />
             </a>
           ) : (
-            <Link className="btn btn-gold nav-cta" href="/contact">
+            <Link className="btn btn-pill btn-pill-gold nav-cta" href="/contact">
               Plan your visit
               <MaterialIcon name="arrow_forward" />
             </Link>
@@ -63,9 +90,11 @@ export default function SiteNav({ churchName, logoUrl, giveUrl, giveLabel }) {
         </nav>
 
         <button
+          ref={toggleRef}
           className="nav-toggle"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
+          aria-controls="site-nav"
           onClick={() => setOpen(!open)}
         >
           <MaterialIcon name={open ? 'close' : 'menu'} className="msvg-lg" />

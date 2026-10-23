@@ -12,11 +12,12 @@ export default async function EventsPage() {
   ]);
 
   return (
-    <main>
+    <main id="main">
       <PageHead
         label={settings.events_kicker}
         title="Everything on our *calendar*"
         body="Conferences, retreats, special services and community programmes. Pick a date and come as you are."
+        art="nativity"
       />
 
       <section className="section">
