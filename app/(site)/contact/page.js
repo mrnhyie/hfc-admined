@@ -1,4 +1,5 @@
 import ContactForm from '@/components/ContactForm';
+import CrossMarks from '@/components/CrossMarks';
 import MaterialIcon from '@/components/MaterialIcon';
 import PageHead from '@/components/PageHead';
 import { getPrograms, getSettings } from '@/lib/queries';
@@ -28,6 +29,7 @@ export default async function ContactPage() {
       />
 
       <section className="section">
+        <CrossMarks seed="contact-form" />
         <div className="container contact-grid">
           <div className="contact-details">
             <div className="section-label">Where to find us</div>

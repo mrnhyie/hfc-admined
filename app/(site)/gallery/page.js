@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import CrossMarks from '@/components/CrossMarks';
 import PageHead from '@/components/PageHead';
 import { getAlbums, getMedia, getSettings } from '@/lib/queries';
 
@@ -24,6 +25,7 @@ export default async function GalleryPage({ searchParams }) {
       />
 
       <section className="section">
+        <CrossMarks seed="gallery-index" />
         <div className="container">
           {names.length > 1 ? (
             <div className="filters">

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import CrossMarks from '@/components/CrossMarks';
 import PageHead from '@/components/PageHead';
 import MaterialIcon from '@/components/MaterialIcon';
 import { eventDateLine, formatDate } from '@/lib/dates';
@@ -88,6 +89,7 @@ export default async function ContentDetailPage({ params }) {
       />
 
       <section className="section">
+        <CrossMarks seed={`post-${post.slug}`} />
         <div className="container">
           {post.video_url ? (
             <div className="sermon-main-image">

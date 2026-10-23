@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ContentCard from '@/components/ContentCard';
+import CrossMarks from '@/components/CrossMarks';
 import MaterialIcon from '@/components/MaterialIcon';
 import PageHead from '@/components/PageHead';
 import { eventDateLine, eventTimeLine, formatDate } from '@/lib/dates';
@@ -75,6 +76,7 @@ export default async function EventDetailPage({ params }) {
       />
 
       <section className="section">
+        <CrossMarks seed={`event-${event.slug}`} />
         <div className="container">
           {event.cover_url ? (
             <div className="simple-grid">
@@ -103,6 +105,7 @@ export default async function EventDetailPage({ params }) {
 
       {posts.length ? (
         <section className="section section-ivory">
+          <CrossMarks seed={`event-${event.slug}-related`} />
           <div className="container">
             <div className="section-head">
               <div>

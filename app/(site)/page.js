@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import ContentCard from '@/components/ContentCard';
 import ContactForm from '@/components/ContactForm';
+import CrossMarks from '@/components/CrossMarks';
 import Emphasise from '@/components/Emphasise';
 import EventCard from '@/components/EventCard';
 import MaterialIcon from '@/components/MaterialIcon';
@@ -119,6 +120,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section belong" id="belong">
+        <CrossMarks seed="home-belong" />
         <div className="container belong-grid">
           <div className="belong-head">
             <div className="section-label">{settings.hero_badge_two_label}</div>
@@ -235,6 +237,7 @@ export default async function HomePage() {
 
       {ministries.length ? (
         <section className="section" id="programs">
+          <CrossMarks seed="home-programs" />
           <div className="container">
             <div className="section-head">
               <div>
@@ -300,6 +303,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section" id="content">
+        <CrossMarks seed="home-content" />
         <div className="container">
           <div className="section-head">
             <div>
@@ -331,6 +335,7 @@ export default async function HomePage() {
 
       {speakers.length ? (
         <section className="section" id="teachers">
+          <CrossMarks seed="home-teachers" />
           <div className="container">
             <div className="section-head">
               <div>
@@ -352,6 +357,7 @@ export default async function HomePage() {
       ) : null}
 
       <section className="section section-ivory" id="gallery">
+        <CrossMarks seed="home-gallery" />
         <div className="container">
           <div className="section-head">
             <div>
@@ -416,6 +422,7 @@ export default async function HomePage() {
       </section>
 
       <section className="section" id="contact">
+        <CrossMarks seed="home-contact" />
         <div className="container contact-grid">
           <div className="contact-details">
             <div className="section-label">{settings.contact_kicker}</div>

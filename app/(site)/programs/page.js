@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import CrossMarks from '@/components/CrossMarks';
 import MaterialIcon from '@/components/MaterialIcon';
 import PageHead from '@/components/PageHead';
 import ProgramCard from '@/components/ProgramCard';
@@ -24,6 +25,7 @@ export default async function ProgramsPage() {
 
       {scheduled.length ? (
         <section className="section">
+          <CrossMarks seed="programs-weekly" />
           <div className="container">
             <div className="section-head">
               <div>
@@ -49,6 +51,7 @@ export default async function ProgramsPage() {
 
       {lead ? (
         <section className="section section-ivory">
+          <CrossMarks seed="programs-featured" />
           <div className="container">
             <div className="feature-banner">
               <img src={lead.cover_url} alt="" loading="lazy" />
@@ -68,6 +71,7 @@ export default async function ProgramsPage() {
 
       {others.length ? (
         <section className="section" id="ministries">
+          <CrossMarks seed="programs-ministries" />
           <div className="container">
             <div className="section-head">
               <div>
@@ -89,6 +93,7 @@ export default async function ProgramsPage() {
 
       {!programs.length ? (
         <section className="section">
+          <CrossMarks seed="programs-empty" />
           <div className="container">
             <div className="empty">No programs published yet.</div>
           </div>

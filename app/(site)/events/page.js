@@ -1,4 +1,5 @@
 import EventCard from '@/components/EventCard';
+import CrossMarks from '@/components/CrossMarks';
 import PageHead from '@/components/PageHead';
 import { getPastEvents, getSettings, getUpcomingEvents } from '@/lib/queries';
 
@@ -21,6 +22,7 @@ export default async function EventsPage() {
       />
 
       <section className="section">
+        <CrossMarks seed="events-upcoming" />
         <div className="container">
           <div className="section-head">
             <div>
@@ -43,6 +45,7 @@ export default async function EventsPage() {
 
       {past.length ? (
         <section className="section section-ivory">
+          <CrossMarks seed="events-past" />
           <div className="container">
             <div className="section-head">
               <div>

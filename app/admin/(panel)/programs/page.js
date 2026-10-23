@@ -1,13 +1,15 @@
 import AdminHead from '@/components/admin/AdminHead';
 import Link from 'next/link';
 import MaterialIcon from '@/components/MaterialIcon';
+import { WeekScheduleCard } from '@/components/admin/CalendarCards';
 import { ProgramItemCard } from '@/components/admin/ItemCards';
 import { deleteProgram } from '@/app/admin/actions';
 import { listProgramsAdmin } from '@/lib/queries';
 
 export const metadata = { title: 'Programs — Admin' };
 
-export default async function AdminProgramsPage() {
+export default async function AdminProgramsPage({ searchParams }) {
+  const { week } = await searchParams;
   const programs = await listProgramsAdmin();
   const scheduled = programs.filter((program) => program.meeting_day).length;
   const withoutCover = programs.filter((program) => !program.cover_url).length;
@@ -23,6 +25,13 @@ export default async function AdminProgramsPage() {
 
       {programs.length ? (
         <>
+          <WeekScheduleCard
+            programs={programs}
+            week={typeof week === 'string' ? week : ''}
+            basePath="/admin/programs"
+            kicker="The week"
+          />
+
           <div className="card-grid card-grid-md">
             {programs.map((program) => (
               <ProgramItemCard key={program.id} program={program} deleteAction={deleteProgram} />

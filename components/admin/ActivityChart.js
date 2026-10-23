@@ -29,33 +29,6 @@ export function monthDelta(values) {
 
 const niceMax = (max) => (max <= 4 ? 4 : Math.ceil(max / 4) * 4);
 
-export function MiniBars({ values }) {
-  const width = 74;
-  const height = 34;
-  const gap = 4;
-  const barWidth = (width - gap * (values.length - 1)) / values.length;
-  const max = niceMax(Math.max(...values, 1));
-
-  return (
-    <svg className="admin-spark" viewBox={`0 0 ${width} ${height}`} aria-hidden="true">
-      {values.map((value, index) => {
-        const barHeight = value ? Math.max(3, (value / max) * height) : 2;
-        return (
-          <rect
-            key={index}
-            className={index === values.length - 1 ? 'is-now' : undefined}
-            x={index * (barWidth + gap)}
-            y={height - barHeight}
-            width={barWidth}
-            height={barHeight}
-            rx={1}
-          />
-        );
-      })}
-    </svg>
-  );
-}
-
 export function ActivityChart({ months, byKind, series }) {
   const width = 660;
   const height = 236;
@@ -64,7 +37,7 @@ export function ActivityChart({ months, byKind, series }) {
   const plotH = height - axis.top - axis.bottom;
   const max = niceMax(Math.max(...series.flatMap((item) => byKind[item.key]), 1));
   const group = plotW / months.length;
-  const barWidth = Math.min(16, (group - 14) / series.length);
+  const barWidth = Math.min(14, (group - 14) / series.length);
   const ticks = [0, 0.5, 1].map((ratio) => ({ value: Math.round(max * ratio), y: axis.top + plotH * (1 - ratio) }));
 
   return (
@@ -94,7 +67,7 @@ export function ActivityChart({ months, byKind, series }) {
                 y={axis.top + plotH - barHeight}
                 width={barWidth}
                 height={barHeight}
-                rx={2}
+                rx={3}
               />
             );
           })}

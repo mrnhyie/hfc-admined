@@ -63,29 +63,39 @@ export function EventItemCard({ event, deleteAction }) {
   const isNext = new Date(event.starts_at).getTime() >= Date.now();
 
   return (
-    <article className="entity-card">
-      <Shot src={event.cover_url} alt={event.title} badge={<Status published={event.published} />}>
-        <span className="card-shot-day">{date.day}</span>
-        <span className="card-shot-when">
-          {date.month} · {date.weekday}
-        </span>
-      </Shot>
+    <article className={`event-row ${isNext ? '' : 'is-past'}`}>
+      <div className="event-row-date">
+        <span>{date.month}</span>
+        <strong>{date.day}</strong>
+        <em>{date.weekday}</em>
+      </div>
 
-      <div className="card-info">
-        <p className="card-meta">{isNext ? 'Upcoming' : 'Past'}</p>
-
-        <h3>{event.title}</h3>
-        <p className="card-meta">
+      <div className="event-row-text">
+        <p className="event-row-kicker">
+          {isNext ? 'Upcoming' : 'Past'}
+          {event.featured ? <span className="event-row-featured">Featured</span> : null}
+        </p>
+        <h3>
+          <Link href={`/admin/events/${event.id}`}>{event.title}</Link>
+        </h3>
+        <p className="event-row-meta">
           {[event.all_day ? 'All day' : formatTime(event.starts_at), event.venue].filter(Boolean).join(' · ')}
         </p>
+      </div>
 
-        <Actions
-          item={event}
-          viewHref={`/events/${event.slug}`}
-          editHref={`/admin/events/${event.id}`}
-          deleteAction={deleteAction}
-          extra={<span className="card-meta">{event.featured ? 'Featured on home' : 'Not featured'}</span>}
-        />
+      <div className="event-row-side">
+        <span className={event.published ? 'pill pill-published' : 'pill pill-draft'}>
+          {event.published ? 'published' : 'draft'}
+        </span>
+        <div className="card-actions">
+          <a className="btn-ghost" href={`/events/${event.slug}`} target="_blank" rel="noopener noreferrer">
+            View
+          </a>
+          <Link className="btn-ghost" href={`/admin/events/${event.id}`}>
+            Edit
+          </Link>
+          <DeleteForm action={deleteAction} id={event.id} message={`Delete “${event.title}”? This cannot be undone.`} />
+        </div>
       </div>
     </article>
   );

@@ -428,17 +428,16 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
 .fact { text-align: center }
 
-/* Italic display figures: the art voice of the site, kept clean with SOFT and
-   WONK at zero so the digits read as type, not doodles. */
+/* The band counts work, so the figures stay on the site's sans: plain,
+   tabular numerals that read as facts rather than ornament. */
 .fact strong {
     display: block;
-    font-family: var(--font-display);
-    font-style: italic;
-    font-weight: 600;
-    font-variation-settings: "SOFT" 0, "WONK" 0;
-    font-size: clamp(2.6rem, 3.4vw, 3.2rem);
+    font-family: var(--font-body);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    font-size: clamp(2.5rem, 3.2vw, 3rem);
     line-height: 1;
-    letter-spacing: -.01em;
+    letter-spacing: -.03em;
     color: var(--plum)
 }
 
@@ -824,6 +823,39 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .mission .watermark { background-position: right -2vw bottom -18%; background-size: min(620px, 54vw) auto }
 
 .section-story .watermark { background-position: right -3vw bottom -5%; background-size: min(620px, 49vw) auto }
+
+/* ---------- small crosses on the white bands ---------- */
+
+/* The same bulletin line art, cut down to thumb-sized marks and salted through
+   the section padding. Multiply drops the paper so only the strokes show. */
+.cross-marks {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none
+}
+
+.cross-marks img {
+    position: absolute;
+    display: block;
+    height: auto;
+    opacity: .34;
+    mix-blend-mode: multiply;
+    user-select: none
+}
+
+.section > .container,
+.belong > .container,
+.split-band > .container { position: relative; z-index: 1 }
+
+@media (max-width: 1340px) {
+    .cross-marks .is-edge { display: none }
+}
+
+@media (max-width: 760px) {
+    .cross-marks { display: none }
+}
 
 /* ---------- page hero + body ---------- */
 
@@ -1343,21 +1375,22 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
 
 /* ---- ADMIN ---- */
-/* The portal is a working surface: Tailwind's neutral ramp for the room (gray
-   canvas, gray-200 hairlines, gray-500 labels) with plum as the only accent and
-   gold reserved for what is genuinely unread or live. */
+/* The portal is a working surface, but it belongs to the same site: a warm paper
+   canvas washed with plum and gold light, glass cards floating over it, Manrope
+   headings at the public weight, light sans figures, and the pill as the only
+   control shape. */
 
 .admin {
-    --admin-canvas: #f8fafc;
-    --admin-card: #fff;
-    --admin-line: #e5e7eb;
-    --admin-line-strong: #d1d5db;
-    --admin-ink: #111827;
-    --admin-body: #374151;
-    --admin-muted: #6b7280;
-    --admin-faint: #9ca3af;
-    --admin-hover: #f3f4f6;
-    --admin-tint: #faf5fb;
+    --admin-canvas: #f6f1e9;
+    --admin-card: #fffdf9;
+    --admin-line: #ebe2e8;
+    --admin-line-strong: #d9cbd9;
+    --admin-ink: #201924;
+    --admin-body: #4a424f;
+    --admin-muted: #6f6672;
+    --admin-faint: #8f8492;
+    --admin-hover: #f4ecf4;
+    --admin-tint: #f7eef8;
     --admin-ring: rgba(84, 16, 95, .16);
     --admin-ok: #047857;
     --admin-ok-bg: #ecfdf5;
@@ -1366,6 +1399,14 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     --admin-bad: #b91c1c;
     --admin-bad-bg: #fef2f2;
 
+    /* Glass: a translucent warm sheet plus a saturation blur, with a lit top
+       edge. The ambient wash below gives the blur something to refract. */
+    --admin-glass: rgba(255, 253, 249, .7);
+    --admin-glass-soft: rgba(255, 255, 255, .52);
+    --admin-glass-edge: rgba(255, 255, 255, .62);
+    --admin-glass-lit: inset 0 1px 0 rgba(255, 255, 255, .72);
+    --admin-blur: blur(24px) saturate(1.3);
+
     /* Every rule below already reads these through the shared names, so
        re-declaring them here retunes the whole portal at once. */
     --line: var(--admin-line);
@@ -1373,62 +1414,75 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     --body: var(--admin-body);
     --muted: var(--admin-muted);
     --plum-soft: var(--admin-tint);
-    --radius: 12px;
-    --radius-sm: 8px;
-    --radius-lg: 16px;
-    --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06);
-    --shadow: 0 4px 12px -2px rgba(16, 24, 40, .1);
-    --shadow-lg: 0 12px 32px -8px rgba(16, 24, 40, .18);
-    /* Fraunces is a public-site device; a dashboard is all sans. */
-    --font-display: var(--font-body);
+    --radius: 22px;
+    --radius-sm: 12px;
+    --radius-lg: 26px;
+    --shadow-sm: 0 1px 2px rgba(32, 25, 36, .04);
+    /* Diffuse and low-contrast: the card floats on the canvas without a visible
+       edge, the way a sheet of paper would. */
+    --shadow: 0 26px 60px -46px rgba(48, 11, 56, .55), 0 2px 8px rgba(48, 11, 56, .03);
+    --shadow-lg: 0 40px 90px -60px rgba(48, 11, 56, .6), 0 4px 14px rgba(48, 11, 56, .04);
 
     min-height: 100vh;
     color: var(--admin-ink);
     font-family: var(--font-body);
-    background: var(--admin-canvas)
+    /* Light, not decoration: three soft washes fixed to the viewport so the
+       glass has something to carry through every screen. */
+    background:
+        radial-gradient(52rem 40rem at 4% -10%, rgba(84, 16, 95, .12), transparent 62%),
+        radial-gradient(44rem 34rem at 104% -6%, rgba(244, 196, 0, .13), transparent 58%),
+        radial-gradient(52rem 44rem at 86% 112%, rgba(84, 16, 95, .09), transparent 62%),
+        var(--admin-canvas);
+    background-attachment: fixed
 }
 
 .admin-shell {
     display: grid;
-    grid-template-columns: 252px minmax(0, 1fr);
+    grid-template-columns: 272px minmax(0, 1fr);
     min-height: 100vh
 }
 
+/* The rail is its own floating panel, inset from the canvas edge. */
 .admin-side {
     position: sticky;
-    top: 0;
+    top: 16px;
     display: flex;
     flex-direction: column;
-    gap: 24px;
-    height: 100vh;
-    padding: 22px 16px;
-    background: var(--admin-card);
+    gap: 26px;
+    height: calc(100vh - 32px);
+    margin: 16px 0 16px 16px;
+    padding: 26px 14px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
     color: var(--body);
-    border-right: 1px solid var(--line)
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow), var(--admin-glass-lit)
 }
 
 .admin-brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: -.01em;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.025em;
     color: var(--admin-ink)
 }
 
 .admin-brand-mark {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     flex: none;
     font-size: 11px;
     font-weight: 800;
     letter-spacing: .04em;
     color: var(--gold-ink);
     background: var(--gold);
-    border-radius: 9px
+    border-radius: 50%
 }
 
 .admin-nav-scroll {
@@ -1443,12 +1497,12 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 }
 
 .admin-nav-group h2 {
-    margin: 0 0 6px;
-    padding-left: 10px;
+    margin: 0 0 8px;
+    padding-left: 12px;
     font-family: var(--font-body);
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .04em;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .13em;
     text-transform: uppercase;
     color: var(--admin-faint)
 }
@@ -1464,11 +1518,11 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 8px 10px;
+    padding: 9px 12px;
     font-size: 14px;
     font-weight: 500;
     color: var(--admin-body);
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-pill);
     transition: background-color .15s ease, color .15s ease
 }
 
@@ -1482,7 +1536,7 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     font-weight: 600;
     font-variant-numeric: tabular-nums;
     color: var(--admin-muted);
-    background: #fff;
+    background: rgba(255, 255, 255, .66);
     border: 1px solid var(--admin-line);
     border-radius: var(--radius-pill)
 }
@@ -1497,16 +1551,16 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
 .admin-nav a:hover {
     color: var(--admin-ink);
-    background: var(--admin-hover)
+    background: rgba(255, 255, 255, .46)
 }
 
-/* Soft tint plus an inset left bar: the item you are on, without a gold slab
-   competing with the content for attention. */
+/* The current item is a lit chip on the glass, the way the reference marks the
+   active screen — colour and weight, no slab or bar. */
 .admin-nav a[data-active="true"] {
     color: var(--plum);
-    font-weight: 600;
-    background: var(--admin-tint);
-    box-shadow: inset 2px 0 0 var(--plum)
+    font-weight: 700;
+    background: rgba(255, 255, 255, .78);
+    box-shadow: 0 1px 2px rgba(48, 11, 56, .06), var(--admin-glass-lit)
 }
 
 .admin-nav a[data-active="true"] em {
@@ -1624,38 +1678,42 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     display: flex;
     align-items: center;
     gap: 12px;
-    min-height: 60px;
-    padding: 12px 28px;
-    /* Solid, not frosted: a translucent bar let the chart's gold bars bleed through
-       the sticky edge and read as a rendering artifact. */
-    background: var(--admin-card);
-    border-bottom: 1px solid var(--admin-line)
+    min-height: 76px;
+    padding: 16px 40px;
+    /* Frosted, not opaque: scrolled cards soften under the bar instead of
+       disappearing behind a flat slab. No bottom rule to cut the page. */
+    background: rgba(246, 241, 233, .62);
+    backdrop-filter: blur(20px) saturate(1.25);
+    -webkit-backdrop-filter: blur(20px) saturate(1.25)
 }
 
 .admin-topbar-tools {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     margin-left: auto
 }
 
 .admin-search {
     display: flex;
     align-items: center;
-    gap: 9px;
+    gap: 10px;
     flex: 1 1 340px;
     min-width: 0;
-    max-width: 460px;
-    height: 38px;
-    padding: 0 12px;
-    background: var(--admin-canvas);
-    border: 1px solid var(--admin-line);
-    border-radius: var(--radius-sm);
+    max-width: 480px;
+    height: 44px;
+    padding: 0 18px;
+    background: var(--admin-glass-soft);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-sm), var(--admin-glass-lit);
     transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease
 }
 
 .admin-search:focus-within {
-    background: #fff;
+    background: rgba(255, 255, 255, .74);
     border-color: var(--plum);
     box-shadow: 0 0 0 3px var(--admin-ring)
 }
@@ -1686,7 +1744,7 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     font-size: 11px;
     font-weight: 600;
     color: var(--admin-muted);
-    background: #fff;
+    background: rgba(255, 255, 255, .68);
     border: 1px solid var(--admin-line-strong);
     border-radius: 6px;
     box-shadow: 0 1px 0 var(--admin-line-strong)
@@ -1696,20 +1754,24 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     position: relative;
     display: grid;
     place-items: center;
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     flex: none;
     color: var(--admin-muted);
-    background: #fff;
-    border: 1px solid var(--admin-line);
-    border-radius: var(--radius-sm);
-    transition: color .15s ease, border-color .15s ease, background-color .15s ease
+    background: var(--admin-glass-soft);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: 50%;
+    box-shadow: var(--shadow-sm), var(--admin-glass-lit);
+    transition: color .15s ease, border-color .15s ease, box-shadow .15s ease
 }
 
 .admin-icon-btn:hover {
     color: var(--plum);
     border-color: var(--admin-line-strong);
-    background: var(--admin-hover)
+    background: rgba(255, 255, 255, .72);
+    box-shadow: var(--shadow)
 }
 
 .admin-icon-btn .msvg { width: 19px; height: 19px }
@@ -1732,52 +1794,54 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .admin-main {
     flex: 1;
     min-width: 0;
-    padding: 26px 28px 72px
+    padding: 20px 40px 96px
 }
 
 .admin-kicker {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .06em;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .14em;
     text-transform: uppercase;
     color: var(--admin-muted)
 }
 
+/* The same short gold rule the public pages use above a section label. */
 .admin-kicker::before {
     content: "";
-    width: 8px;
-    height: 8px;
+    width: 22px;
+    height: 2px;
     flex: none;
-    background: var(--gold);
-    border-radius: 2px
+    background: var(--gold)
 }
 
 .admin-head {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 18px 24px;
+    gap: 20px 28px;
     flex-wrap: wrap;
-    margin-bottom: 24px
+    margin-bottom: 30px
 }
 
 .admin-head-text { min-width: 0 }
 
 .admin-head h1 {
-    margin: 6px 0 0;
-    font-size: 24px;
-    font-weight: 700;
-    letter-spacing: -.02em;
+    margin: 10px 0 0;
+    font-family: var(--font-body);
+    font-size: clamp(2rem, 2.8vw, 2.5rem);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -.035em;
     color: var(--admin-ink)
 }
 
 .admin-head p {
-    max-width: 68ch;
-    margin: 6px 0 0;
-    font-size: 14px;
+    max-width: 62ch;
+    margin: 8px 0 0;
+    font-size: 14.5px;
     line-height: 1.6;
     color: var(--admin-muted)
 }
@@ -1786,7 +1850,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px
+    gap: 10px;
+    margin-left: auto
 }
 
 .admin-subhead {
@@ -1795,111 +1860,101 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     justify-content: space-between;
     gap: 16px;
     margin: 0 0 14px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: -.01em;
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -.02em;
     color: var(--admin-ink)
 }
 
-.admin-stats {
+/* One quiet sheet instead of five loud cards: this month's additions on the
+   left, the five queues as a hairline-separated strip on the right. */
+.admin-overview {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(212px, 100%), 1fr));
-    gap: 16px;
-    margin-bottom: 20px
-}
-
-/* Read in the order the eye scans a card: what it counts, how many, how that
-   compares with last month, and the six-month shape behind both. */
-.admin-stat {
-    display: grid;
-    gap: 12px;
-    padding: 18px;
-    color: var(--admin-ink);
-    background: var(--admin-card);
-    border: 1px solid var(--admin-line);
+    grid-template-columns: minmax(0, .85fr) minmax(0, 2.15fr);
+    margin-bottom: 24px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease
+    box-shadow: var(--shadow), var(--admin-glass-lit)
 }
 
-.admin-stat:hover {
-    transform: translateY(-1px);
-    border-color: var(--admin-line-strong);
-    box-shadow: var(--shadow)
-}
-
-.admin-stat-top {
+.admin-overview-lead {
     display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 0
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    padding: 28px 30px
 }
 
-/* Neutral wells: the icon identifies the queue, so it should not out-shout the
-   number underneath it. */
-.admin-stat-icon {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    flex: none;
-    color: var(--admin-muted);
-    background: var(--admin-hover);
-    border: 1px solid var(--admin-line);
-    border-radius: var(--radius-sm);
-    transition: color .15s ease, background-color .15s ease, border-color .15s ease
-}
-
-.admin-stat:hover .admin-stat-icon {
-    color: var(--plum);
-    background: var(--admin-tint);
-    border-color: rgba(84, 16, 95, .18)
-}
-
-.admin-stat-icon .msvg { width: 17px; height: 17px }
-
-.admin-stat .label {
-    margin: 0;
-    overflow: hidden;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .06em;
-    text-transform: uppercase;
-    color: var(--admin-muted);
-    white-space: nowrap;
-    text-overflow: ellipsis
-}
-
-.admin-stat-figure {
+.admin-overview-figure {
     display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 10px
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px
 }
 
-.stat {
-    display: block;
-    font-size: 28px;
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -.02em;
+.admin-overview-value {
+    font-size: clamp(3.2rem, 4.4vw, 4rem);
+    font-weight: 300;
+    line-height: .9;
+    letter-spacing: -.05em;
     font-variant-numeric: tabular-nums;
     color: var(--admin-ink)
 }
 
-.admin-spark { width: 74px; height: 34px; flex: none }
-
-.admin-spark rect { fill: var(--admin-line) }
-
-.admin-spark rect.is-now { fill: var(--plum) }
-
-.admin-stat-note {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 6px;
-    font-size: 12px;
+.admin-overview-note {
+    max-width: 32ch;
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
     color: var(--admin-muted)
+}
+
+.admin-overview-metrics {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr))
+}
+
+/* The whole cell is a link, so hover answers in colour rather than motion. */
+.admin-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    padding: 26px 20px;
+    border-left: 1px solid var(--line);
+    transition: background-color .15s ease
+}
+
+.admin-metric:hover { background: rgba(255, 255, 255, .42) }
+
+.admin-metric-label {
+    overflow: hidden;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--admin-muted)
+}
+
+.admin-metric-value {
+    font-size: clamp(1.7rem, 2.1vw, 2.1rem);
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -.045em;
+    font-variant-numeric: tabular-nums;
+    color: var(--admin-ink)
+}
+
+.admin-metric-note {
+    margin-top: auto;
+    font-size: 12px;
+    line-height: 1.4;
+    color: var(--admin-faint)
 }
 
 .admin-delta {
@@ -1925,26 +1980,34 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
 .label {
     display: block;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .02em;
     color: var(--admin-body);
-    margin-bottom: 6px
+    margin-bottom: 7px
 }
 
 /* ---- ADMIN CHARTS ---- */
 /* Every bar is a real month from getAdminActivity(): the four tints are the four
    kinds that grow on their own, and programs are left out because a weekly order
    has no monthly story to tell. */
-.admin-chart-panel { margin-bottom: 18px }
+.admin-chart-panel { margin-bottom: 24px }
 
 .admin-chart {
     display: block;
     width: 100%;
     height: auto;
-    padding: 16px 18px 6px
+    padding: 20px 24px 8px
 }
 
-.admin-chart-grid { stroke: var(--line); stroke-width: 1 }
+/* Dotted rules instead of solid ones: the grid suggests the scale without
+   drawing a cage around the bars. */
+.admin-chart-grid {
+    stroke: var(--admin-line);
+    stroke-width: 1.5;
+    stroke-dasharray: 1 7;
+    stroke-linecap: round
+}
 
 .admin-chart-tick {
     fill: var(--admin-faint);
@@ -1959,19 +2022,24 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: 6px 14px;
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--muted)
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: var(--admin-ink)
 }
 
 .admin-chart-legend span {
     display: inline-flex;
     align-items: center;
-    gap: 6px
+    gap: 6px;
+    padding: 5px 10px;
+    background: rgba(255, 255, 255, .5);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-pill)
 }
 
-.admin-chart-legend i { width: 9px; height: 9px; border-radius: 50% }
+.admin-chart-legend i { width: 7px; height: 7px; border-radius: 50% }
 
 .series-events { fill: var(--plum) }
 
@@ -1994,16 +2062,20 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .admin-panels {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
-    gap: 20px;
+    gap: 24px;
     align-items: start
 }
 
+/* Hairline only: the panels sit on the paper without a shadow lifting them off
+   it, which is what keeps a screen of four of them calm. */
 .admin-panel {
     overflow: hidden;
-    background: var(--admin-card);
-    border: 1px solid var(--admin-line);
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm)
+    box-shadow: var(--shadow), var(--admin-glass-lit)
 }
 
 .admin-panel-head {
@@ -2011,15 +2083,14 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     align-items: center;
     justify-content: space-between;
     gap: 14px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--admin-line)
+    padding: 20px 24px 18px
 }
 
 .admin-panel-head h2 {
     margin: 0;
-    font-size: 14px;
-    font-weight: 600;
-    letter-spacing: -.01em;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.02em;
     color: var(--admin-ink)
 }
 
@@ -2057,25 +2128,25 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .admin-table td:last-child { width: 118px }
 
 .admin-table th {
-    padding: 9px 16px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: .05em;
+    padding: 11px 24px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
     text-transform: uppercase;
     color: var(--admin-muted);
-    background: var(--admin-card);
+    background: transparent;
     border-bottom: 1px solid var(--admin-line)
 }
 
 .admin-table td {
-    padding: 12px 16px;
+    padding: 16px 24px;
     border-bottom: 1px solid var(--admin-line);
     vertical-align: middle
 }
 
 .admin-table tr:last-child td { border-bottom: 0 }
 
-.admin-table tbody tr:hover { background: var(--admin-hover) }
+.admin-table tbody tr:hover { background: rgba(255, 255, 255, .38) }
 
 /* First column is mark + title + one supporting line, which is what makes a
    table row scannable without a full card. The flex lives on a child because a
@@ -2090,8 +2161,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .admin-row-mark {
     display: grid;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     flex: none;
     overflow: hidden;
     font-size: 13px;
@@ -2161,19 +2232,17 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .entity-card {
     display: flex;
     flex-direction: column;
-    background: var(--admin-card);
-    border: 1px solid var(--line);
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease
+    box-shadow: var(--shadow), var(--admin-glass-lit);
+    transition: border-color .15s ease
 }
 
-.entity-card:hover {
-    transform: translateY(-2px);
-    border-color: var(--admin-line-strong);
-    box-shadow: var(--shadow)
-}
+.entity-card:hover { border-color: var(--admin-line-strong) }
 
 /* The plate every card opens with: the entity's own image when it has one,
    otherwise a plum panel carrying whatever identifies it — the date, the
@@ -2215,10 +2284,13 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .card-shot-mark { width: 42px; height: 42px; color: var(--gold) }
 
 .card-shot-day {
-    font-size: 34px;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-size: 38px;
     line-height: 1;
-    letter-spacing: -.02em;
+    letter-spacing: -.01em;
     color: var(--gold);
     font-variant-numeric: tabular-nums
 }
@@ -2279,7 +2351,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .card-body-pre { white-space: pre-wrap }
 
 .card-grid + .editor-note,
-.card-empty + .editor-note { margin-top: 18px }
+.card-empty + .editor-note,
+.event-list + .editor-note { margin-top: 18px }
 
 .card-foot {
     display: flex;
@@ -2362,6 +2435,7 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     color: var(--muted)
 }
 
+/* Cardless pill fields: the line is the control, there is no inset well. */
 .input,
 .select,
 .textarea {
@@ -2369,25 +2443,43 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     font: inherit;
     font-size: 14px;
     color: var(--admin-ink);
-    padding: 9px 12px;
-    background: #fff;
-    border: 1px solid var(--admin-line-strong);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-sm);
-    transition: border-color .15s ease, box-shadow .15s ease
+    padding: 11px 18px;
+    background: rgba(255, 255, 255, .66);
+    border: 1px solid rgba(84, 16, 95, .14);
+    border-radius: var(--radius-pill);
+    transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease
+}
+
+.select::placeholder,
+.input::placeholder { color: var(--admin-faint) }
+
+/* The native arrow sits on the border and ignores padding, so draw our own
+   and hold it to the same 18px inset as the text. */
+.select {
+    -webkit-appearance: none;
+    appearance: none;
+    padding-right: 48px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236f6672' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 18px 18px;
+    cursor: pointer
 }
 
 .textarea {
     min-height: 190px;
-    line-height: 1.65
+    padding: 14px 18px;
+    line-height: 1.65;
+    border-radius: var(--radius)
 }
 
-.textarea-short { min-height: 90px }
+.textarea-short { min-height: 90px; border-radius: var(--radius-sm) }
 
 .input:focus,
 .select:focus,
 .textarea:focus {
     outline: 0;
+    background-color: rgba(255, 255, 255, .88);
     border-color: var(--plum);
     box-shadow: 0 0 0 3px var(--admin-ring)
 }
@@ -2449,11 +2541,13 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     top: 84px;
     display: grid;
     gap: 16px;
-    padding: 20px;
-    background: var(--admin-card);
-    border: 1px solid var(--line);
+    padding: 22px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
     border-radius: var(--radius);
-    box-shadow: var(--shadow-sm)
+    box-shadow: var(--shadow-sm), var(--admin-glass-lit)
 }
 
 .editor-side .check { align-items: flex-start }
@@ -2493,28 +2587,32 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 .form-group .editor-note { margin-bottom: 14px }
 
 /* Three weights only: one solid primary, one outlined, one destructive-tinted.
-   No lift on hover — a control that moves under the cursor reads as a card. */
+   Same pill and small caps as the public buttons; no lift on hover — a control
+   that moves under the cursor reads as a card. */
 .btn-admin,
 .btn-ghost,
 .btn-danger {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    min-height: 38px;
+    min-height: 40px;
     font: inherit;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 14px;
-    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 0 20px;
+    border-radius: var(--radius-pill);
     cursor: pointer;
-    transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease
+    white-space: nowrap;
+    transition: background-color .15s ease, border-color .15s ease, color .15s ease
 }
 
 .btn-admin {
     border: 1px solid var(--plum);
     background: var(--plum);
-    color: #fff;
-    box-shadow: var(--shadow-sm)
+    color: #fff
 }
 
 .btn-admin:hover {
@@ -2523,21 +2621,24 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 }
 
 .btn-ghost {
-    background: #fff;
+    background: rgba(255, 255, 255, .52);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    backdrop-filter: blur(14px) saturate(1.2);
     color: var(--admin-body);
-    border: 1px solid var(--admin-line-strong)
+    border: 1px solid var(--admin-glass-edge);
+    box-shadow: var(--shadow-sm), var(--admin-glass-lit)
 }
 
 .btn-ghost:hover {
     color: var(--admin-ink);
-    border-color: var(--admin-faint);
-    background: var(--admin-hover)
+    border-color: var(--admin-line-strong);
+    background: rgba(255, 255, 255, .74)
 }
 
 .btn-danger {
-    background: #fff;
+    background: rgba(255, 255, 255, .52);
     color: var(--admin-bad);
-    border: 1px solid var(--admin-line-strong)
+    border: 1px solid rgba(185, 28, 28, .18)
 }
 
 .btn-danger:hover {
@@ -2600,9 +2701,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     padding: 6px 12px;
     font-size: 12px;
     color: var(--admin-body);
-    background: #fff;
-    border: 1px solid var(--admin-line);
-    box-shadow: var(--shadow-sm)
+    background: rgba(255, 255, 255, .56);
+    border: 1px solid var(--admin-glass-edge)
 }
 
 .admin-filters .pill::before { display: none }
@@ -2638,20 +2738,21 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     min-height: 100vh;
     padding: 24px;
     overflow: hidden;
-    isolation: isolate;
-    background: var(--admin-canvas)
+    isolation: isolate
 }
 
 .login-box {
     position: relative;
     overflow: hidden;
     width: 100%;
-    max-width: 400px;
-    padding: 28px;
-    background: var(--admin-card);
-    border: 1px solid var(--admin-line);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow)
+    max-width: 420px;
+    padding: 32px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg), var(--admin-glass-lit)
 }
 
 /* The one accent the sign-in screen gets, in place of the painted backdrop. */
@@ -2660,16 +2761,22 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     position: absolute;
     inset: 0 0 auto;
     height: 3px;
-    background: var(--plum)
+    background: var(--gold)
 }
 
 .login-box h1 {
-    margin: 14px 0 22px;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: -.02em;
+    margin: 16px 0 24px;
+    font-family: var(--font-body);
+    font-size: clamp(1.5rem, 3vw, 1.8rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -.03em;
     color: var(--admin-ink)
 }
+
+.login-box .field:last-of-type { margin-bottom: 22px }
+
+.login-box .btn-admin { width: 100% }
 
 .login-foot {
     margin: 18px 0 0;
@@ -2688,8 +2795,1394 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     outline-offset: 2px
 }
 
+/* ---- ADMIN CALENDAR ---- */
+/* Events are time, so they get a calendar: a white sheet on the paper canvas,
+   the mini month and next dates in the margin, and one chip language shared by
+   the month and week grids. */
+.calendar-board {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+    align-items: start
+}
+
+.calendar-main { min-width: 0 }
+
+.calendar-main .card-grid { margin-top: 22px }
+
+.calendar-sheet {
+    overflow: hidden;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow), var(--admin-glass-lit)
+}
+
+.calendar-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 22px;
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-nav { display: flex; align-items: center; gap: 6px }
+
+.calendar-nav-btn {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: var(--admin-body);
+    background: rgba(255, 255, 255, .56);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: 50%;
+    box-shadow: var(--admin-glass-lit);
+    transition: background-color .15s ease, color .15s ease
+}
+
+.calendar-nav-btn:hover { color: var(--plum); background: rgba(255, 255, 255, .82) }
+
+.calendar-nav-btn .msvg { width: 18px; height: 18px }
+
+.calendar-today {
+    display: inline-flex;
+    align-items: center;
+    height: 36px;
+    padding: 0 16px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--admin-body);
+    background: rgba(255, 255, 255, .56);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--admin-glass-lit);
+    transition: background-color .15s ease, color .15s ease
+}
+
+.calendar-today:hover { color: var(--plum); background: rgba(255, 255, 255, .82) }
+
+.calendar-title {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    color: var(--admin-ink)
+}
+
+.calendar-views {
+    display: flex;
+    gap: 2px;
+    margin-left: auto;
+    padding: 3px;
+    background: rgba(255, 255, 255, .5);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius-pill)
+}
+
+.calendar-views a {
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--admin-muted);
+    border-radius: var(--radius-pill);
+    transition: background-color .15s ease, color .15s ease
+}
+
+.calendar-views a:hover { color: var(--admin-ink) }
+
+.calendar-views a.is-active {
+    color: var(--admin-ink);
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(48, 11, 56, .08), var(--admin-glass-lit)
+}
+
+/* ---- month ---- */
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-weekdays span {
+    padding: 10px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.calendar-weekday-short { display: none }
+
+.calendar-week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-week:last-child { border-bottom: 0 }
+
+.calendar-cell {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 118px;
+    padding: 9px 9px 10px;
+    border-right: 1px solid var(--line);
+    transition: background-color .15s ease
+}
+
+.calendar-cell:last-child { border-right: 0 }
+
+.calendar-cell:hover { background: rgba(255, 255, 255, .34) }
+
+.calendar-cell.is-today { background: rgba(244, 196, 0, .05) }
+
+.calendar-cell.is-outside { background: rgba(255, 253, 249, .3) }
+
+.calendar-cell.is-outside .calendar-date { color: var(--admin-faint); opacity: .6 }
+
+.calendar-cell-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px
+}
+
+.calendar-date {
+    display: inline-grid;
+    place-items: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 5px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--admin-body);
+    border-radius: var(--radius-pill);
+    transition: background-color .15s ease, color .15s ease
+}
+
+.calendar-date:hover { color: var(--plum); background: var(--admin-tint) }
+
+.calendar-cell.is-today .calendar-date {
+    color: var(--plum-dark);
+    background: var(--gold);
+    font-weight: 800;
+    box-shadow: 0 1px 0 rgba(48, 11, 56, .12)
+}
+
+.calendar-today-tag {
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.calendar-cell-events {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0
+}
+
+/* One chip in month cells and in the week grid, so an event looks the same
+   wherever it is found. */
+.cal-chip {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    min-width: 0;
+    padding: 4px 8px;
+    font-size: 11.5px;
+    line-height: 1.25;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    transition: background-color .15s ease, border-color .15s ease
+}
+
+.calendar-cell .cal-chip-time,
+.calendar-allday .cal-chip-time { display: none }
+
+.cal-chip-time {
+    flex: none;
+    font-size: 10px;
+    font-weight: 700;
+    opacity: .72
+}
+
+.cal-chip-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-weight: 600
+}
+
+.cal-chip.is-live {
+    color: var(--plum);
+    background: rgba(84, 16, 95, .07);
+    border-color: rgba(84, 16, 95, .08)
+}
+
+.cal-chip.is-live:hover { background: rgba(84, 16, 95, .13) }
+
+.cal-chip.is-draft {
+    color: var(--admin-muted);
+    background: rgba(255, 255, 255, .4);
+    border-color: var(--admin-line-strong);
+    border-style: dashed
+}
+
+.cal-chip.is-draft:hover { color: var(--admin-ink); background: rgba(255, 255, 255, .72) }
+
+.calendar-more {
+    padding: 1px 8px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--admin-muted)
+}
+
+.calendar-more:hover { color: var(--plum) }
+
+.calendar-dots {
+    display: none;
+    flex-wrap: wrap;
+    gap: 3px
+}
+
+.calendar-dots i {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%
+}
+
+.calendar-dots .is-live { background: var(--plum) }
+
+.calendar-dots .is-draft { background: #fff; border: 1px solid var(--admin-line-strong) }
+
+/* ---- week ---- */
+.calendar-week-scroll {
+    overflow-x: auto;
+    scrollbar-width: thin
+}
+
+.calendar-week-head {
+    display: grid;
+    grid-template-columns: 54px repeat(7, minmax(0, 1fr));
+    min-width: 720px;
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-day-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 11px 6px 9px;
+    border-left: 1px solid var(--line)
+}
+
+.calendar-day-tile span {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.calendar-day-tile strong {
+    display: grid;
+    place-items: center;
+    min-width: 38px;
+    height: 38px;
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--admin-ink);
+    border-radius: 12px;
+    font-variant-numeric: tabular-nums
+}
+
+.calendar-day-tile:hover strong { background: rgba(255, 255, 255, .66) }
+
+.calendar-day-tile.is-today strong { color: var(--plum-dark); background: var(--gold) }
+
+.calendar-day-tile.is-today span { color: var(--plum) }
+
+.calendar-allday {
+    display: grid;
+    grid-template-columns: 54px repeat(7, minmax(0, 1fr));
+    min-width: 720px;
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-allday-label {
+    padding: 8px 9px 0;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    text-align: right;
+    color: var(--admin-faint)
+}
+
+.calendar-allday-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+    padding: 6px;
+    border-left: 1px solid var(--line)
+}
+
+.calendar-week-body {
+    position: relative;
+    display: grid;
+    grid-template-columns: 54px repeat(7, minmax(0, 1fr));
+    min-width: 720px
+}
+
+.calendar-times { position: relative }
+
+.calendar-times span {
+    position: absolute;
+    right: 10px;
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--admin-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap
+}
+
+.calendar-times span:first-child { transform: none }
+
+.calendar-times span:last-child { transform: translateY(-100%) }
+
+.calendar-day-col {
+    position: relative;
+    border-left: 1px solid var(--line);
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 43px,
+        var(--line) 43px,
+        var(--line) 44px
+    )
+}
+
+.calendar-day-col.is-today { background-color: rgba(244, 196, 0, .05) }
+
+.calendar-event {
+    position: absolute;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 4px 6px 5px;
+    font-size: 11px;
+    line-height: 1.2;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 7px;
+    transition: background-color .15s ease
+}
+
+.calendar-event strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.calendar-event span {
+    font-size: 9.5px;
+    font-weight: 600;
+    opacity: .72;
+    white-space: nowrap
+}
+
+.calendar-event.is-live {
+    color: var(--plum);
+    background: rgba(84, 16, 95, .09);
+    border-color: rgba(84, 16, 95, .1);
+    border-left: 3px solid var(--plum)
+}
+
+.calendar-event.is-live:hover { background: rgba(84, 16, 95, .14) }
+
+.calendar-event.is-draft {
+    color: var(--admin-muted);
+    background: rgba(255, 255, 255, .64);
+    border: 1px dashed var(--admin-line-strong);
+    border-left: 3px solid var(--admin-line-strong)
+}
+
+.calendar-event.is-draft:hover { background: rgba(255, 255, 255, .9) }
+
+/* On a phone a seven-column time grid only shows three days, so the week
+   becomes a day-by-day agenda instead. */
+.calendar-week-agenda { display: none }
+
+.calendar-agenda-day {
+    display: flex;
+    gap: 14px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line)
+}
+
+.calendar-agenda-day:last-child { border-bottom: 0 }
+
+.calendar-agenda-date {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    width: 46px;
+    color: var(--admin-muted)
+}
+
+.calendar-agenda-date span {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase
+}
+
+.calendar-agenda-date strong {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    margin-top: 3px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    color: var(--admin-ink);
+    border-radius: 50%;
+    font-variant-numeric: tabular-nums
+}
+
+.calendar-agenda-day.is-today .calendar-agenda-date span { color: var(--plum) }
+
+.calendar-agenda-day.is-today .calendar-agenda-date strong {
+    color: var(--plum-dark);
+    background: var(--gold)
+}
+
+.calendar-agenda-events {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0
+}
+
+.calendar-agenda-chip { width: 100% }
+
+.calendar-agenda-empty {
+    align-self: center;
+    margin: 0;
+    font-size: 12px;
+    color: var(--admin-faint)
+}
+
+/* ---- margin ---- */
+.calendar-side {
+    display: grid;
+    grid-template-columns: minmax(0, .85fr) minmax(0, 1.4fr);
+    gap: 18px;
+    align-items: start
+}
+
+/* The margin cards rejoin the sheet above 1500px; below that the month and
+   week grids need every pixel of the main column, so they sit underneath. */
+@media(min-width:1500px) {
+    .calendar-board { grid-template-columns: minmax(0, 1fr) 280px }
+
+    .calendar-side {
+        position: sticky;
+        top: 92px;
+        display: flex;
+        flex-direction: column
+    }
+}
+
+.calendar-side-card {
+    padding: 18px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow), var(--admin-glass-lit)
+}
+
+.calendar-mini { padding: 16px 14px 14px }
+
+.calendar-mini-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 10px
+}
+
+.calendar-mini-head span {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: -.01em;
+    color: var(--admin-ink)
+}
+
+.calendar-mini-head a {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    color: var(--admin-muted);
+    border-radius: 50%
+}
+
+.calendar-mini-head a:hover { color: var(--plum); background: var(--admin-hover) }
+
+.calendar-mini-head .msvg { width: 16px; height: 16px }
+
+.calendar-mini-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center
+}
+
+.calendar-mini-weekday {
+    padding-bottom: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.calendar-mini-day {
+    position: relative;
+    display: grid;
+    place-items: center;
+    height: 30px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--admin-body);
+    border-radius: 50%
+}
+
+.calendar-mini-day:hover { color: var(--plum); background: var(--admin-hover) }
+
+.calendar-mini-day.is-outside { color: var(--admin-faint); opacity: .5 }
+
+.calendar-mini-day.is-today { color: var(--plum-dark); background: var(--gold); font-weight: 800 }
+
+.calendar-mini-day.has-events::after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    background: var(--plum);
+    border-radius: 50%;
+    opacity: .8
+}
+
+.calendar-mini-day.is-today.has-events::after { background: var(--plum-dark) }
+
+.calendar-side-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px
+}
+
+.calendar-side-head h2 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--admin-ink)
+}
+
+.calendar-side-head span {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--admin-faint)
+}
+
+.calendar-upcoming ul {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+.calendar-upcoming li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 6px;
+    border-radius: 10px
+}
+
+.calendar-upcoming li a:hover { background: rgba(255, 255, 255, .5) }
+
+.calendar-upcoming-date {
+    display: flex;
+    flex: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 40px;
+    color: var(--plum);
+    background: rgba(84, 16, 95, .06);
+    border-radius: 10px
+}
+
+.calendar-upcoming-date strong {
+    font-size: 15px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums
+}
+
+.calendar-upcoming-date em {
+    margin-top: 3px;
+    font-size: 8.5px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: .08em;
+    opacity: .8
+}
+
+.calendar-upcoming-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0
+}
+
+.calendar-upcoming-text strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--admin-ink)
+}
+
+.calendar-upcoming-text em {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-style: normal;
+    color: var(--admin-faint)
+}
+
+.calendar-side-empty {
+    margin: 0 0 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--admin-muted)
+}
+
+.calendar-legend {
+    display: flex;
+    gap: 14px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--line)
+}
+
+.calendar-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--admin-muted)
+}
+
+.calendar-legend i {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%
+}
+
+.calendar-legend i.is-live { background: var(--plum) }
+
+.calendar-legend i.is-draft { background: #fff; border: 1px solid var(--admin-line-strong) }
+
+@media(max-width:720px) {
+    .calendar-toolbar { padding: 14px; gap: 10px }
+
+    .calendar-title { order: 3; flex-basis: 100%; font-size: 1.15rem }
+
+    .calendar-toolbar.is-list .calendar-title { order: 0; flex-basis: 100%; font-size: 1.35rem }
+
+    .calendar-toolbar.is-list .calendar-views { margin-left: 0 }
+
+    .calendar-cell { min-height: 76px; padding: 6px 5px 7px }
+
+    .calendar-cell-events { display: none }
+
+    .calendar-dots { display: flex; margin-top: auto; padding-left: 2px }
+
+    /* With the chips hidden the whole cell is the day's tap target. */
+    .calendar-cell .calendar-date::after {
+        content: "";
+        position: absolute;
+        inset: 0
+    }
+
+    .calendar-today-tag { display: none }
+
+    .calendar-weekday-full { display: none }
+
+    .calendar-weekday-short { display: inline; font-size: 9.5px }
+
+    .calendar-weekdays span { padding: 9px 8px }
+
+    .calendar-date { min-width: 24px; height: 24px; font-size: 11.5px }
+
+    .calendar-day-tile strong { min-width: 32px; height: 32px; font-size: 1.1rem }
+
+    .calendar-day-tile { padding: 8px 4px 7px }
+}
+
+@media(max-width:640px) {
+    .calendar-side { grid-template-columns: 1fr; gap: 14px }
+
+    .calendar-mini { display: none }
+
+    .calendar-side-card { padding: 16px }
+
+    .calendar-views a { padding: 6px 11px }
+
+    .calendar-cell { min-height: 68px }
+}
+
+@media(max-width:720px) {
+    .calendar-week-view .calendar-week-scroll,
+    .calendar-week-view .calendar-week-head,
+    .calendar-week-view .calendar-allday { display: none }
+
+    .calendar-week-agenda { display: block }
+}
+
+/* ---- ADMIN COMPACT CALENDARS ---- */
+/* Programs, sermons and messages borrow the events design at a smaller scale:
+   a month at a glance with its dated feed, or the week strip for programs that
+   repeat by weekday. Same sheet, dots and chips, one column narrower. */
+.compact-cal {
+    display: grid;
+    grid-template-columns: 284px minmax(0, 1fr);
+    grid-template-areas: "head head" "month feed";
+    gap: 18px 30px;
+    align-items: start;
+    margin-bottom: 22px;
+    padding: 20px 24px 22px;
+    background: var(--admin-glass);
+    -webkit-backdrop-filter: var(--admin-blur);
+    backdrop-filter: var(--admin-blur);
+    border: 1px solid var(--admin-glass-edge);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow), var(--admin-glass-lit)
+}
+
+.compact-cal-head {
+    grid-area: head;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--line)
+}
+
+.compact-cal-id {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0
+}
+
+.compact-cal-id .admin-kicker { margin: 0 }
+
+.compact-cal-id h2 {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    color: var(--admin-ink)
+}
+
+.compact-month-wrap {
+    grid-area: month;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0
+}
+
+.compact-month {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    text-align: center
+}
+
+.compact-weekday {
+    padding-bottom: 3px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.compact-day {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--admin-body);
+    border-radius: 10px;
+    font-variant-numeric: tabular-nums
+}
+
+.compact-day.is-outside { color: var(--admin-faint); opacity: .42 }
+
+.compact-day.is-today {
+    color: var(--plum-dark);
+    background: var(--gold);
+    font-weight: 800
+}
+
+.compact-day.has-entries { background: rgba(255, 255, 255, .42) }
+
+.compact-day.is-today.has-entries { background: var(--gold) }
+
+.compact-dots {
+    position: absolute;
+    bottom: 4px;
+    display: flex;
+    gap: 2px
+}
+
+.compact-dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%
+}
+
+.compact-dots .is-live, .calendar-legend .is-live { background: var(--plum) }
+
+.compact-dots .is-draft, .calendar-legend .is-draft {
+    background: #fff;
+    border: 1px solid var(--admin-line-strong)
+}
+
+.compact-dots .is-new, .calendar-legend .is-new {
+    background: var(--gold);
+    box-shadow: 0 0 0 1px rgba(48, 11, 56, .28)
+}
+
+.compact-dots .is-muted, .calendar-legend .is-muted { background: var(--admin-line-strong) }
+
+.compact-month-wrap .calendar-legend { margin-top: 0; padding-top: 10px }
+
+.compact-feed { grid-area: feed; min-width: 0 }
+
+.compact-feed .calendar-side-head { margin-bottom: 8px }
+
+.compact-feed-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none
+}
+
+.compact-feed-list li > a,
+.compact-feed-list li > div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 7px 8px;
+    border-radius: 12px
+}
+
+.compact-feed-list li > a:hover { background: rgba(255, 255, 255, .55) }
+
+.compact-feed-list .calendar-upcoming-date { width: 40px; height: 42px }
+
+.compact-feed-text {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0
+}
+
+.compact-feed-text strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--admin-ink)
+}
+
+.compact-feed-text em {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-style: normal;
+    color: var(--admin-faint)
+}
+
+.compact-feed-flag {
+    flex: none;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.compact-feed-flag.is-new {
+    padding: 2px 7px;
+    color: var(--plum-dark);
+    background: var(--gold);
+    border-radius: var(--radius-pill)
+}
+
+.compact-feed-more {
+    margin: 6px 0 0;
+    padding-left: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--admin-faint)
+}
+
+/* ---- programs: the week ---- */
+.week-cal {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "head" "week"
+}
+
+.week-strip {
+    grid-area: week;
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 14px
+}
+
+.week-col {
+    display: flex;
+    flex-direction: column;
+    min-height: 132px;
+    padding-bottom: 8px;
+    background: rgba(255, 255, 255, .18);
+    border-right: 1px solid var(--line)
+}
+
+.week-col:last-child { border-right: 0 }
+
+.week-col.is-today { background: rgba(244, 196, 0, .05) }
+
+.week-col-head {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    margin-bottom: 8px;
+    padding: 9px 4px 7px;
+    border-bottom: 1px solid var(--line)
+}
+
+.week-col-head span {
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.week-col-head strong {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -.03em;
+    color: var(--admin-ink);
+    border-radius: 50%;
+    font-variant-numeric: tabular-nums
+}
+
+.week-col.is-today .week-col-head span { color: var(--plum) }
+
+.week-col.is-today .week-col-head strong {
+    color: var(--plum-dark);
+    background: var(--gold)
+}
+
+.week-col-body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0 7px
+}
+
+.week-chip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px
+}
+
+.week-chip .cal-chip-time { font-size: 9.5px }
+
+/* A week column is narrow, so names take two lines rather than an ellipsis. */
+.week-chip .cal-chip-title {
+    display: -webkit-box;
+    overflow: hidden;
+    white-space: normal;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical
+}
+
+.week-empty {
+    padding-left: 2px;
+    font-size: 11px;
+    color: var(--admin-faint);
+    opacity: .55
+}
+
+.week-agenda { display: none }
+
+.week-anytime {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--line)
+}
+
+.week-anytime-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.week-anytime-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px
+}
+
+.week-anytime .cal-chip { padding: 3px 10px }
+
+.week-anytime-empty {
+    margin: 0;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: var(--admin-faint)
+}
+
+.week-cal .calendar-legend { margin-top: 14px }
+
+/* Two columns need room for the month plus a readable feed; below this the
+   month stacks over it, still aligned to the sheet's left edge. */
+@media(max-width:1020px) {
+    .compact-cal {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-areas: "head" "month" "feed";
+        gap: 16px
+    }
+
+    .compact-month { max-width: 420px }
+
+    .compact-month-wrap { max-width: 420px }
+
+    .week-cal { grid-template-areas: "head" "week" }
+}
+
+/* Below this the seven week columns get too narrow for a time and a name, so
+   the week reads as a day-by-day agenda instead. */
+@media(max-width:1280px) {
+    .week-strip { display: none }
+
+    .week-agenda { display: block }
+}
+
+@media(max-width:720px) {
+    .compact-cal { padding: 16px 16px 18px }
+
+    .compact-cal-id h2 { font-size: 1.05rem }
+
+    .compact-day { height: 36px }
+
+    .week-strip { display: none }
+
+    .week-agenda { display: block }
+
+    .week-cal .calendar-legend { margin-top: 12px }
+}
+
+/* ---- ADMIN EVENT LIST ---- */
+/* The List view drops the product card for a flat, ruled row: the calendar's
+   date language on the left, one line of facts, the controls on the right. */
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none
+}
+
+.event-row {
+    display: grid;
+    grid-template-columns: 78px minmax(0, 1fr) auto;
+    grid-template-areas: "date text side";
+    gap: 0 22px;
+    align-items: center;
+    padding: 14px 20px;
+    background: var(--admin-card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    box-shadow: none;
+    transition: border-color .15s ease
+}
+
+.event-row:hover { transform: none; box-shadow: none; border-color: var(--admin-line-strong) }
+
+.event-row-date {
+    grid-area: date;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    justify-content: center;
+    gap: 2px;
+    padding-right: 18px;
+    text-align: center;
+    border-right: 1px solid var(--line)
+}
+
+.event-row-date span {
+    font-size: 9.5px;
+    font-weight: 800;
+    letter-spacing: .13em;
+    color: var(--admin-muted)
+}
+
+.event-row-date strong {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-variation-settings: "SOFT" 0, "WONK" 0;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -.01em;
+    color: var(--plum);
+    font-variant-numeric: tabular-nums
+}
+
+.event-row-date em {
+    font-size: 9.5px;
+    font-style: normal;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.event-row.is-past .event-row-date strong { color: var(--admin-faint) }
+
+.event-row-text {
+    grid-area: text;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    min-width: 0
+}
+
+.event-row-kicker {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--admin-faint)
+}
+
+.event-row-featured {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--plum)
+}
+
+.event-row-featured::before {
+    content: "";
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor
+}
+
+.event-row h3 {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 700;
+    letter-spacing: -.015em;
+    color: var(--admin-ink);
+    overflow-wrap: anywhere
+}
+
+.event-row h3 a:hover { color: var(--plum) }
+
+.event-row-meta {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--muted)
+}
+
+.event-row-side {
+    grid-area: side;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px
+}
+
+.event-row-side .pill { flex: none }
+
+/* Flat controls: the row carries no shadow or blur of its own. */
+.event-row .btn-ghost,
+.event-row .btn-danger {
+    background: #fff;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    box-shadow: none;
+    border-color: var(--line);
+    color: var(--admin-body)
+}
+
+.event-row .btn-ghost:hover {
+    color: var(--plum);
+    border-color: var(--admin-line-strong);
+    background: var(--admin-tint)
+}
+
+.event-row .btn-danger {
+    color: var(--admin-muted);
+    border-color: var(--line)
+}
+
+.event-row .btn-danger:hover {
+    color: var(--admin-bad);
+    border-color: #fecaca;
+    background: var(--admin-bad-bg)
+}
+
+@media(max-width:720px) {
+    .event-row {
+        grid-template-columns: 62px minmax(0, 1fr);
+        grid-template-areas: "date text" "side side";
+        gap: 12px 16px;
+        padding: 14px 16px
+    }
+
+    .event-row-date { padding-right: 14px }
+
+    .event-row-date strong { font-size: 27px }
+
+    .event-row-side {
+        justify-content: flex-start;
+        gap: 10px;
+        padding-top: 12px;
+        border-top: 1px solid var(--line)
+    }
+
+    .event-row-side .card-actions { margin-left: auto }
+}
+
+/* Below this the lead figure no longer leaves each queue enough width for its
+   label, so the overview becomes one column: total on top, strip underneath. */
+@media(max-width:1280px) {
+    .admin-overview { grid-template-columns: 1fr }
+
+    /* Stacked, the sheet reads as one line: the figure on the left, its
+       explanation beside it, rather than a tall block with dead space. */
+    .admin-overview-lead {
+        flex-flow: row wrap;
+        align-items: flex-end;
+        gap: 6px 26px;
+        padding: 24px 28px
+    }
+
+    .admin-overview-lead .admin-kicker { flex-basis: 100% }
+
+    .admin-overview-note {
+        flex: 1 1 280px;
+        max-width: none;
+        padding-bottom: 5px
+    }
+
+    .admin-overview-metrics { border-top: 1px solid var(--line) }
+
+    .admin-metric { padding: 20px 24px }
+}
+
 @media(max-width:1000px) {
-    .admin-main { padding: 26px 24px 60px }
+    .admin-main { padding: 20px 28px 80px }
 
     .editor-grid { grid-template-columns: 1fr }
 
@@ -2701,19 +4194,22 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
     /* The rail becomes one scrolling chip bar. Wrapping it instead stacked the
        brand, seven links and the user row above the dashboard, pushing the
-       first stat card a full screen down. */
+       overview a full screen down. */
     .admin-side {
         position: static;
         /* min-width: auto would floor the 1fr grid track at the chip row's
            min-content width and stretch the whole page past the viewport. */
         min-width: 0;
         height: auto;
+        margin: 0;
         flex-flow: row nowrap;
         align-items: center;
         gap: 12px;
-        padding: 10px 14px;
-        border-right: 0;
-        border-bottom: 1px solid var(--line)
+        padding: 10px 16px;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        border-radius: 0;
+        box-shadow: none
     }
 
     .admin-brand { flex: none }
@@ -2762,7 +4258,7 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
        in the dashboard heading. */
     .admin-user-text { display: none }
 
-    .admin-topbar { padding: 12px 16px }
+    .admin-topbar { min-height: 68px; padding: 12px 24px }
 
     .admin-search { flex: 1 1 auto }
 
@@ -2772,16 +4268,39 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 }
 
 @media(max-width:640px) {
-    .admin-main { padding: 20px 16px 48px }
+    .admin-main { padding: 16px 16px 56px }
 
     /* The mark already identifies the app; the chips need the width. */
     .admin-brand-name { display: none }
 
-    .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .admin-topbar { padding: 12px 16px }
 
-    /* Two columns at phone width leave no room for "Sermons & news" on one
-       line; wrapping beats ellipsising it. */
-    .admin-stat .label { letter-spacing: .05em; white-space: normal }
+    .admin-head-tools { margin-left: 0 }
+
+    .admin-overview-lead {
+        flex-flow: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 22px 20px 20px
+    }
+
+    .admin-overview-lead .admin-kicker { flex-basis: auto }
+
+    .admin-overview-note { flex: none; padding-bottom: 0 }
+
+    .admin-overview-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+
+    .admin-metric { padding: 18px 20px 20px }
+
+    .admin-metric:nth-child(odd) { border-left: 0 }
+
+    .admin-metric:nth-child(n+3) { border-top: 1px solid var(--line) }
+
+    /* Five queues do not fill a two-column grid; the last one takes the row. */
+    .admin-metric:last-child {
+        grid-column: 1 / -1;
+        border-left: 0
+    }
 
     /* Title and status are the two columns that answer "what is it, is it
        live"; the date is one click away on the list screen. */

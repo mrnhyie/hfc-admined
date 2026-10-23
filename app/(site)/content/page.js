@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import ContentCard from '@/components/ContentCard';
+import CrossMarks from '@/components/CrossMarks';
 import PageHead from '@/components/PageHead';
 import { POST_KIND_LABELS, POST_KINDS } from '@/lib/forms';
 import { getPosts, getSeries, getSettings } from '@/lib/queries';
@@ -35,6 +36,7 @@ export default async function ContentPage({ searchParams }) {
       />
 
       <section className="section">
+        <CrossMarks seed="content-index" />
         <div className="container">
           <div className="filters">
             <Link className="filter" data-active={!selectedKind && !selectedSeries} href="/content">

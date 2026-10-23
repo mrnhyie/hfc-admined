@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import AdminHead from '@/components/admin/AdminHead';
 import MaterialIcon from '@/components/MaterialIcon';
-import { ActivityChart, MiniBars, monthDelta, shapeActivity } from '@/components/admin/ActivityChart';
+import { ActivityChart, monthDelta, shapeActivity } from '@/components/admin/ActivityChart';
 import { eventDateStack, formatDate, formatTime } from '@/lib/dates';
 import { POST_KIND_LABELS } from '@/lib/forms';
 import { getSessionUser } from '@/lib/auth';
@@ -48,38 +48,78 @@ function nextEvents(events, limit = 4) {
   return [...upcoming, ...past].slice(0, limit);
 }
 
-function Stat({ href, icon, label, value, note, values }) {
-  const { diff } = monthDelta(values);
+function Metric({ href, label, value, note }) {
+  return (
+    <Link href={href} className="admin-metric">
+      <span className="admin-metric-label">{label}</span>
+      <span className="admin-metric-value">{value}</span>
+      <span className="admin-metric-note">{note}</span>
+    </Link>
+  );
+}
+
+/* One figure for the whole month, then the five queues that make it up. The
+   total is every kind summed, so it cannot disagree with the strip beside it. */
+function Overview({ totals, diff, counts }) {
   const tone = diff > 0 ? 'is-up' : diff < 0 ? 'is-down' : 'is-flat';
+  const albums = of(counts, 'albums');
+  const inbox = of(counts, 'messages');
 
   return (
-    <Link href={href} className="admin-stat">
-      <span className="admin-stat-top">
-        <span className="admin-stat-icon">
-          <MaterialIcon name={icon} />
-        </span>
-        <span className="label">{label}</span>
-      </span>
+    <section className="admin-overview" aria-label="Content overview">
+      <div className="admin-overview-lead">
+        <div className="admin-kicker">This month</div>
+        <div className="admin-overview-figure">
+          <span className="admin-overview-value">{totals.at(-1) ?? 0}</span>
+          <em className={`admin-delta ${tone}`}>
+            {diff === 0 ? (
+              'no change'
+            ) : (
+              <>
+                <MaterialIcon name={diff > 0 ? 'arrow_upward' : 'arrow_downward'} />
+                {Math.abs(diff)}
+              </>
+            )}
+          </em>
+        </div>
+        <p className="admin-overview-note">
+          items added across events, programs, sermons, photos and messages
+        </p>
+      </div>
 
-      <span className="admin-stat-figure">
-        <span className="stat">{value}</span>
-        <MiniBars values={values} />
-      </span>
-
-      <span className="admin-stat-note">
-        <em className={`admin-delta ${tone}`}>
-          {diff === 0 ? (
-            'no change'
-          ) : (
-            <>
-              <MaterialIcon name={diff > 0 ? 'arrow_upward' : 'arrow_downward'} />
-              {Math.abs(diff)}
-            </>
-          )}
-        </em>
-        {note}
-      </span>
-    </Link>
+      <nav className="admin-overview-metrics" aria-label="Content by section">
+        <Metric
+          href="/admin/events"
+          label="Events"
+          value={of(counts, 'events')}
+          note={`${of(counts, 'events_published')} published`}
+        />
+        <Metric
+          href="/admin/programs"
+          label="Programs"
+          value={of(counts, 'programs')}
+          note={`${of(counts, 'programs_published')} published`}
+        />
+        <Metric
+          href="/admin/content"
+          label="Sermons & news"
+          value={of(counts, 'posts')}
+          note={`${of(counts, 'posts_published')} published`}
+        />
+        <Metric
+          href="/admin/media"
+          label="Gallery"
+          value={of(counts, 'media')}
+          note={`${albums} album${albums === 1 ? '' : 's'}`}
+        />
+        <Metric
+          href="/admin/messages"
+          label="Messages"
+          value={of(counts, 'new_messages')}
+          note={`${inbox} in the inbox`}
+        />
+      </nav>
+    </section>
   );
 }
 
@@ -145,6 +185,10 @@ export default async function AdminDashboard() {
   ]);
 
   const { months, byKind } = shapeActivity(activity);
+  const totals = months.map((_, index) =>
+    Object.values(byKind).reduce((sum, values) => sum + (values[index] ?? 0), 0),
+  );
+  const { diff } = monthDelta(totals);
   const newMessages = messages.filter((message) => message.status === 'new');
   const adminName = user?.name?.trim();
 
@@ -209,48 +253,7 @@ export default async function AdminDashboard() {
         </div>
       </AdminHead>
 
-      <div className="admin-stats">
-        <Stat
-          href="/admin/events"
-          icon="calendar_today"
-          label="Events"
-          value={of(counts, 'events')}
-          note={`${of(counts, 'events_published')} of ${of(counts, 'events')} published`}
-          values={byKind.events}
-        />
-        <Stat
-          href="/admin/programs"
-          icon="church"
-          label="Programs"
-          value={of(counts, 'programs')}
-          note={`${of(counts, 'programs_published')} of ${of(counts, 'programs')} published`}
-          values={byKind.programs}
-        />
-        <Stat
-          href="/admin/content"
-          icon="auto_stories"
-          label="Sermons & news"
-          value={of(counts, 'posts')}
-          note={`${of(counts, 'posts_published')} of ${of(counts, 'posts')} published`}
-          values={byKind.posts}
-        />
-        <Stat
-          href="/admin/media"
-          icon="photo_camera"
-          label="Gallery"
-          value={of(counts, 'media')}
-          note={`${of(counts, 'albums')} album${of(counts, 'albums') === 1 ? '' : 's'}`}
-          values={byKind.media}
-        />
-        <Stat
-          href="/admin/messages"
-          icon="mail"
-          label="Messages"
-          value={of(counts, 'new_messages')}
-          note={`${of(counts, 'messages')} in the inbox`}
-          values={byKind.messages}
-        />
-      </div>
+      <Overview totals={totals} diff={diff} counts={counts} />
 
       <section className="admin-panel admin-chart-panel">
         <header className="admin-panel-head">

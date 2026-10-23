@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ContentCard from '@/components/ContentCard';
+import CrossMarks from '@/components/CrossMarks';
 import MaterialIcon from '@/components/MaterialIcon';
 import PageHead from '@/components/PageHead';
 import { renderMarkdown } from '@/lib/markdown';
@@ -60,6 +61,7 @@ export default async function ProgramDetailPage({ params }) {
       />
 
       <section className="section">
+        <CrossMarks seed={`program-${program.slug}`} />
         <div className="container">
           {program.cover_url && rows.length ? (
             <div className="simple-grid">
@@ -88,6 +90,7 @@ export default async function ProgramDetailPage({ params }) {
 
       {posts.length ? (
         <section className="section section-ivory">
+          <CrossMarks seed={`program-${program.slug}-related`} />
           <div className="container">
             <div className="section-head">
               <div>
