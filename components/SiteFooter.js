@@ -1,4 +1,6 @@
 import Link from 'next/link';
+import BrandIcon from '@/components/BrandIcon';
+import MaterialIcon from '@/components/MaterialIcon';
 import { socialLinks } from '@/lib/socials';
 
 const EXPLORE = [
@@ -11,17 +13,48 @@ const EXPLORE = [
 
 export default function SiteFooter({ settings }) {
   const socials = socialLinks(settings);
+  const telHref = settings.phone ? `tel:${settings.phone.replace(/\s+/g, '')}` : null;
 
   return (
     <footer className="site-footer">
       <div className="container">
+        <div className="footer-cta">
+          <Link className="btn btn-pill" href="/contact">
+            Plan your visit
+            <MaterialIcon name="arrow_forward" />
+          </Link>
+          {settings.give_url ? (
+            <a className="btn btn-pill btn-pill-gold" href={settings.give_url} target="_blank" rel="noopener noreferrer">
+              {settings.give_label}
+              <MaterialIcon name="arrow_outward" />
+            </a>
+          ) : null}
+        </div>
+
         <div className="footer-grid">
-          <div>
+          <div className="footer-col footer-col-brand">
             <div className="footer-brand">
               <img src={settings.logo_url} alt="" />
               <span>{settings.church_name}</span>
             </div>
             <p className="footer-blurb">{settings.about_quote}</p>
+            {socials.length ? (
+              <ul className="footer-social" aria-label="Social media">
+                {socials.map((item) => (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                      title={item.label}
+                    >
+                      <BrandIcon name={item.icon} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
           </div>
 
           <div className="footer-col">
@@ -36,28 +69,9 @@ export default function SiteFooter({ settings }) {
           <div className="footer-col">
             <h4>Visit us</h4>
             <p>{settings.address}</p>
-            {settings.phone ? <a href={`tel:${settings.phone.replace(/\s+/g, '')}`}>{settings.phone}</a> : null}
+            {settings.phone ? <a href={telHref}>{settings.phone}</a> : null}
             {settings.email ? <a href={`mailto:${settings.email}`}>{settings.email}</a> : null}
             {settings.service_note ? <p>{settings.service_note}</p> : null}
-          </div>
-
-          <div className="footer-col">
-            <h4>Connected</h4>
-            {settings.hero_badge_one_label ? (
-              <p>
-                {settings.hero_badge_one_label}: {settings.hero_badge_one_value}
-              </p>
-            ) : null}
-            {settings.give_url ? (
-              <a href={settings.give_url} target="_blank" rel="noopener noreferrer">
-                {settings.give_label}
-              </a>
-            ) : null}
-            {socials.map((item) => (
-              <a key={item.label} href={item.href} target="_blank" rel="noopener noreferrer">
-                {item.label}
-              </a>
-            ))}
           </div>
         </div>
 

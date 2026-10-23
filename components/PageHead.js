@@ -20,6 +20,7 @@ export default function PageHead({ label, title, body, crumbs = [] }) {
         <h1>
           <Emphasise text={title} />
         </h1>
+        <span className="rule-gold" aria-hidden="true" />
         {body ? <p>{body}</p> : null}
       </div>
     </header>

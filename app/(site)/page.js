@@ -8,6 +8,7 @@ import ProgramCard from '@/components/ProgramCard';
 import SpeakerCard from '@/components/SpeakerCard';
 import {
   getFactCounts,
+  getLatestSermon,
   getMedia,
   getPosts,
   getPrograms,
@@ -32,7 +33,7 @@ const AUDIENCES = [
 ];
 
 export default async function HomePage() {
-  const [settings, programs, events, posts, media, counts, speakers] = await Promise.all([
+  const [settings, programs, events, posts, media, counts, speakers, sermon] = await Promise.all([
     getSettings(),
     getPrograms(),
     getUpcomingEvents(4),
@@ -40,6 +41,7 @@ export default async function HomePage() {
     getMedia({ limit: 8 }),
     getFactCounts(),
     getSpeakers({ limit: 6 }),
+    getLatestSermon(),
   ]);
 
   const scheduled = programs.filter((program) => program.meeting_day);
@@ -58,61 +60,62 @@ export default async function HomePage() {
         <div className="hero-media">
           <img src={settings.hero_image_url} alt={settings.church_name} />
         </div>
-        <div className="container">
-          <div className="hero-copy">
-            {settings.hero_eyebrow ? <div className="section-label">{settings.hero_eyebrow}</div> : null}
-            <h1>
-              <Emphasise text={settings.hero_title} />
-            </h1>
-            <p>{settings.hero_body}</p>
-            <div className="hero-actions">
-              <Link className="btn btn-gold" href="/contact">
-                Plan your visit
-                <MaterialIcon name="arrow_forward" />
-              </Link>
-              <Link className="btn btn-outline" href="/programs">
-                Explore our church
-              </Link>
-            </div>
+        <div className="container hero-inner">
+          {sermon ? (
+            <Link className="hero-play" href={`/content/${sermon.slug}`} aria-label={`Watch ${sermon.title}`}>
+              <span className="hero-play-disc">
+                <MaterialIcon name="play_arrow" />
+              </span>
+              <span className="hero-play-note">Watch the last message</span>
+            </Link>
+          ) : null}
+
+          {settings.hero_eyebrow ? <p className="hero-script">{settings.hero_eyebrow}</p> : null}
+          <h1>
+            <Emphasise text={settings.hero_title} />
+          </h1>
+          <p className="hero-lede">{settings.hero_body}</p>
+          <div className="hero-actions">
+            <Link className="btn btn-pill" href="/contact">
+              Plan your visit
+            </Link>
+            <Link className="btn btn-pill" href="/programs">
+              Explore our church
+            </Link>
+          </div>
+        </div>
+        {/* The reference tears the photograph open into the white page rather than
+            closing it on a straight rule. */}
+        <span className="hero-tear" aria-hidden="true" />
+      </section>
+
+      {/* Two decisions, one gold rule between them: when to come, and where to
+          belong. Both lines are the church's own settings text. */}
+      <section className="split-band" aria-label="Visiting and belonging">
+        <div className="container split-inner">
+          <div className="split-cell">
+            <h2>{settings.hero_badge_one_label}</h2>
+            <p>
+              {settings.hero_badge_one_value}
+              <br />
+              {settings.address}
+            </p>
+            <Link className="btn btn-pill btn-pill-plum" href="/contact">
+              Start here
+            </Link>
+          </div>
+
+          <span className="split-rule" aria-hidden="true" />
+
+          <div className="split-cell">
+            <h2>{settings.hero_badge_two_label}</h2>
+            <p>{settings.hero_note}</p>
+            <Link className="btn btn-pill btn-pill-plum" href="/programs">
+              Find your group
+            </Link>
           </div>
         </div>
       </section>
-
-      <div className="hero-info-wrap">
-        <div className="container">
-          <div className="hero-info">
-            <div className="info-cell">
-              <span className="info-well">
-                <MaterialIcon name="calendar_today" />
-              </span>
-              <div>
-                <span className="info-label">{settings.hero_badge_one_label}</span>
-                <strong>{settings.hero_badge_one_value}</strong>
-              </div>
-            </div>
-            <div className="info-cell">
-              <span className="info-well">
-                <MaterialIcon name="place" />
-              </span>
-              <div>
-                <span className="info-label">Our location</span>
-                <strong>{settings.address}</strong>
-              </div>
-            </div>
-            {settings.hero_note ? (
-              <div className="info-cell">
-                <span className="info-well">
-                  <MaterialIcon name="groups" />
-                </span>
-                <div>
-                  <span className="info-label">{settings.hero_badge_two_label}</span>
-                  <strong>{settings.hero_note}</strong>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </div>
 
       <section className="section belong" id="belong">
         <div className="container belong-grid">
@@ -390,13 +393,13 @@ export default async function HomePage() {
             <p>{settings.cta_body}</p>
           </div>
           <div className="hero-actions">
-            <Link className="btn btn-plum" href="/contact">
+            <Link className="btn btn-pill btn-pill-gold" href="/contact">
               Plan your visit
               <MaterialIcon name="arrow_forward" />
             </Link>
             {settings.give_url ? (
               <a
-                className="btn btn-line"
+                className="btn btn-pill"
                 href={settings.give_url}
                 target="_blank"
                 rel="noopener noreferrer"

@@ -6,6 +6,7 @@
     --plum: #54105f;
     --plum-dark: #300b38;
     --plum-deep: #210827;
+    --charcoal: #1e1b22;
     --gold: #f4c400;
     --gold-bright: #ffda25;
     --gold-ink: #20130a;
@@ -107,11 +108,9 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
    deliberate full-stop rather than a decorative rule. */
 .rule-gold { display: block; width: 62px; height: 3px; margin-top: 20px; background: var(--gold); border-radius: 2px }
 
-/* Circular icon plates are the one repeated device: the hero band and the
-   belonging cards both lead with one. */
-.info-well, .belong-well { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50% }
-
-.info-well { color: var(--gold); background: rgba(255, 255, 255, .09) }
+/* Circular icon plates are the one repeated device: the belonging cards and the
+   ministry rows both lead with one. */
+.belong-well { display: grid; place-items: center; width: 48px; height: 48px; flex: none; border-radius: 50% }
 
 .belong-well.is-plum { color: var(--plum); background: var(--plum-soft) }
 
@@ -119,42 +118,43 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 /* ---------- header ---------- */
 
-/* Solid, not frosted: a translucent bar over the plum hero reads as mud, and
-   the admin pass already proved the bleed-through is not worth it. */
+/* The bar is the same plate as the hero wash, so the photograph runs underneath
+   it instead of stopping at a light strip. Solid plum keeps the type legible on
+   inner pages, where the band above it can be any colour. */
 .site-header {
     position: sticky;
     top: 0;
     z-index: 40;
-    background: var(--ivory);
-    border-bottom: 1px solid var(--line)
+    background: var(--plum-deep);
+    border-bottom: 1px solid rgba(255, 255, 255, .12)
 }
 
 .nav { height: 78px; display: flex; align-items: center; gap: 26px }
 
 .brand { display: flex; align-items: center; gap: 12px; flex: none }
 
-.brand img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #fff; border: 1px solid var(--line) }
+.brand img { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #fff; border: 0 }
 
 /* The name is set on two lines in the display face, which is how the church
    signs its own letterhead. */
-.brand-word { display: grid; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-size: 1.06rem; font-weight: 700; line-height: 1.1; letter-spacing: -.015em; color: var(--plum) }
+.brand-word { display: grid; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-size: 1.06rem; font-weight: 700; line-height: 1.1; letter-spacing: -.015em; color: #fff }
 
 .nav-links { flex: 1; display: flex; align-items: center; justify-content: center; gap: 30px; font-size: .9rem; font-weight: 700 }
 
-.nav-links > a:not(.nav-cta) { position: relative; color: var(--body); padding: 6px 0; transition: color .18s }
+.nav-links > a:not(.nav-cta) { position: relative; color: rgba(255, 255, 255, .78); padding: 6px 0; transition: color .18s }
 
 .nav-links > a:not(.nav-cta)::after { content: ''; position: absolute; left: 0; right: 100%; bottom: 0; height: 2px; background: var(--gold); transition: right .22s ease }
 
 .nav-links > a:not(.nav-cta):hover,
-.nav-links > a[data-active="true"] { color: var(--plum) }
+.nav-links > a[data-active="true"] { color: #fff }
 
 .nav-links > a:not(.nav-cta):hover::after,
 .nav-links > a[data-active="true"]::after { right: 0 }
 
-.nav-cta { margin-left: 6px; padding: 12px 20px; font-size: .88rem }
+.nav-cta { margin-left: 6px; padding: 12px 22px; font-size: .88rem; border-radius: var(--radius-pill) }
 
 /* Bare icon at the end of the bar — no box around it. */
-.nav-toggle { display: none; margin-left: auto; padding: 6px; color: var(--plum); background: none; border: 0 }
+.nav-toggle { display: none; margin-left: auto; padding: 6px; color: #fff; background: none; border: 0 }
 
 /* ---------- buttons ---------- */
 
@@ -191,6 +191,29 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .btn-line:hover { background: var(--plum); color: #fff }
 
+/* The reference's one button shape: a wide pill with a hairline edge and small
+   caps inside. The padding keeps the tap target where the template's does not. */
+.btn-pill {
+    padding: 14px 30px;
+    border-radius: var(--radius-pill);
+    border-color: rgba(255, 255, 255, .55);
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .13em;
+    text-transform: uppercase
+}
+
+.btn-pill:hover { background: rgba(255, 255, 255, .14); border-color: #fff }
+
+.btn-pill.btn-pill-plum { border-color: var(--plum); color: var(--plum) }
+
+.btn-pill.btn-pill-plum:hover { background: var(--plum); border-color: var(--plum); color: #fff }
+
+.btn-pill.btn-pill-gold { border-color: var(--gold); background: var(--gold); color: var(--gold-ink) }
+
+.btn-pill.btn-pill-gold:hover { border-color: var(--gold-bright); background: var(--gold-bright); color: var(--gold-ink) }
+
 .link-inline { display: inline-flex; align-items: center; gap: 7px; font-weight: 800; color: var(--plum) }
 
 .link-inline .msvg { width: 17px; height: 17px; transition: transform .2s ease }
@@ -204,64 +227,86 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 /* ---------- hero ---------- */
 
-/* Deep plum plate, photograph bleeding in from the right, copy on the wash.
-   The band closes on a diagonal so the page cuts into it rather than the two
-   meeting on a hard rule. */
+/* The photograph is the whole plate with a plum wash over it, and the copy
+   stands in the middle of it. The band opens into the page on a torn edge. */
 .hero {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding: clamp(96px, 11vw, 168px) 0 clamp(150px, 15vw, 214px);
+    padding: clamp(96px, 11vw, 168px) 0 clamp(132px, 14vw, 200px);
     color: #fff;
-    background: var(--plum-deep)
+    background: var(--plum-deep);
+    text-align: center
 }
 
 .hero-media { position: absolute; inset: 0; z-index: -2 }
 
 .hero-media img { width: 100%; height: 100%; object-fit: cover; object-position: center 42% }
 
-/* One flat wash does the legibility work; the photo stays a photo. */
-.hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(100deg, rgba(33, 8, 39, .97) 0%, rgba(33, 8, 39, .93) 30%, rgba(48, 11, 56, .72) 52%, rgba(33, 8, 39, .2) 78%, rgba(33, 8, 39, .1) 100%) }
+/* Heavier at the top and bottom than through the middle: the band needs its own
+   weight at the tear and under the sticky bar, while the faces stay readable. */
+.hero::before { content: ''; position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, rgba(33, 8, 39, .93) 0%, rgba(48, 11, 56, .74) 46%, rgba(33, 8, 39, .9) 100%) }
 
-.hero::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: clamp(64px, 8vw, 118px); background: var(--paper); clip-path: polygon(0 0, 0 100%, 100% 100%) }
+.hero-inner { position: relative; z-index: 1; display: grid; justify-items: center }
 
-.hero .container { position: relative; z-index: 1 }
+/* The one route into a recorded service, sitting above the headline the way the
+   reference stages its play control. */
+.hero-play { display: grid; justify-items: center; gap: 13px; margin-bottom: clamp(24px, 3.5vw, 40px) }
 
-.hero-copy { max-width: 720px }
+.hero-play-disc { display: grid; place-items: center; width: 66px; height: 66px; border-radius: 50%; color: #fff; background: rgba(255, 255, 255, .12); border: 1px solid rgba(255, 255, 255, .55); transition: background-color .18s ease, border-color .18s ease, color .18s ease }
 
-.hero h1 { margin: 20px 0 24px; max-width: 17ch; font-size: clamp(2.35rem, 4.6vw, 3.8rem); line-height: 1.04; color: #fff }
+.hero-play-disc .msvg { width: 32px; height: 32px; margin-left: 4px }
 
-.hero p { max-width: 46ch; margin: 0; color: rgba(255, 255, 255, .84); font-size: 1.06rem }
+.hero-play:hover .hero-play-disc { color: var(--gold-ink); background: var(--gold); border-color: var(--gold) }
 
-.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px }
+.hero-play-note { font-size: .68rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; color: rgba(255, 255, 255, .82) }
 
-/* ---------- hero info band ---------- */
+/* A liturgical line rather than a category label, so it is set in the display
+   face at a readable size instead of tracked caps. */
+.hero-script { margin: 0; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-style: italic; font-size: clamp(1.15rem, 2.1vw, 1.6rem); line-height: 1.3; color: var(--gold) }
 
-/* Lifted back over the hero's diagonal seam: the three things a first-time
-   visitor actually needs are the first thing on the page. */
-.hero-info-wrap { position: relative; z-index: 2; margin-top: clamp(-150px, -11vw, -104px) }
+/* The reference sets its headline in the text face at heavy weight; the serif is
+   left to the section headings below. */
+.hero h1 { margin: 12px 0 22px; max-width: 19ch; font-family: var(--font-body); font-weight: 800; font-size: clamp(2.4rem, 5.2vw, 4rem); line-height: 1.04; letter-spacing: -.032em; color: #fff }
 
-/* 1px gaps over the plate colour give hairline dividers that survive any
-   re-flow of the grid, so the cells need no borders of their own. */
-.hero-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-    gap: 1px;
-    background: rgba(255, 255, 255, .13);
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow-lg)
+.hero-lede { max-width: 56ch; margin: 0; color: rgba(255, 255, 255, .86); font-size: 1.05rem }
+
+.hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; margin-top: 36px }
+
+/* Paper climbing into the photograph on a ragged line. The polygon is the only
+   layer, so the seam scales with the band instead of tiling. */
+.hero-tear {
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    z-index: 2;
+    height: clamp(48px, 6vw, 88px);
+    background: var(--paper);
+    clip-path: polygon(0 55%, 3% 48%, 6% 60%, 9% 45%, 14% 58%, 18% 50%, 23% 62%, 27% 47%, 31% 55%, 36% 43%, 40% 57%, 45% 50%, 49% 61%, 53% 46%, 58% 56%, 62% 49%, 66% 60%, 71% 44%, 75% 54%, 79% 48%, 84% 59%, 88% 46%, 92% 55%, 96% 50%, 100% 57%, 100% 100%, 0 100%)
 }
 
-.info-cell { display: flex; align-items: center; gap: 16px; padding: 26px 28px; background: var(--plum-dark); min-width: 0 }
+/* ---------- split band ---------- */
 
-.info-cell .msvg { width: 22px; height: 22px }
+/* Two decisions and one gold rule between them: when to come, and where to
+   belong. The copy is the church's own settings text. */
+.split-band { padding: clamp(52px, 6.5vw, 88px) 0 clamp(60px, 8vw, 104px) }
 
-.info-cell > div { min-width: 0 }
+.split-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: clamp(26px, 5vw, 72px);
+    align-items: center;
+    text-align: center
+}
 
-.info-label { display: block; font-size: .68rem; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; color: var(--gold) }
+.split-cell { display: grid; justify-items: center; gap: 16px; min-width: 0 }
 
-.info-cell strong { display: block; margin-top: 6px; font-size: 1rem; font-weight: 700; line-height: 1.4; color: #fff }
+.split-cell h2 { margin: 0; font-family: var(--font-body); font-weight: 800; font-size: clamp(1.45rem, 2.5vw, 2.05rem); line-height: 1.15; letter-spacing: -.025em; color: var(--ink) }
+
+.split-cell p { margin: 0; max-width: 34ch; color: var(--body); font-size: 1.02rem; line-height: 1.55 }
+
+.split-rule { width: 4px; min-height: 148px; background: var(--gold); border-radius: 2px }
 
 /* ---------- labels and section shells ---------- */
 
@@ -278,17 +323,20 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 /* The eyebrow sits on a plum plate in these three, where gold-dark is
    indistinguishable from the background. */
 .section-plum .section-label,
-.hero .section-label,
 .page-hero .section-label,
 .mission .section-label { color: var(--gold) }
 
-.section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 40px; padding-bottom: 24px; border-bottom: 1px solid var(--line) }
+/* Every band opens the same way: a caps eyebrow, the heading, one short gold
+   rule, then the note or the link centred under it. */
+.section-head { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-bottom: clamp(40px, 5vw, 62px); text-align: center }
+
+.section-head > div { display: grid; justify-items: center; gap: 10px }
+
+.section-head > div::after { content: ''; width: 62px; height: 3px; margin-top: 8px; background: var(--gold); border-radius: 2px }
 
 .section-head h2, .section-title { margin-bottom: 0; max-width: 22ch }
 
-.section-note { max-width: 360px; margin: 0; color: var(--muted); font-size: .95rem }
-
-.section-plum .section-head { border-color: rgba(255, 255, 255, .16) }
+.section-note { max-width: 52ch; margin: 0; color: var(--muted); font-size: .98rem }
 
 .section-plum .section-note { color: rgba(255, 255, 255, .72) }
 
@@ -683,29 +731,32 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 .visit-cta { padding: clamp(64px, 8vw, 104px) 0; background: var(--plum-dark); color: #fff }
 
-.visit-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 32px }
+.visit-inner { display: grid; justify-items: center; gap: 8px; text-align: center }
 
-.visit-inner h2 { margin: 0 0 10px; max-width: 640px; color: #fff }
+.visit-inner h2 { margin: 0 0 10px; max-width: 24ch; color: #fff }
 
 .visit-inner p { margin: 0; max-width: 520px; color: rgba(255, 255, 255, .78) }
 
-/* The band is plum, so the buttons on it are gold and outlined rather than the
-   plum and hairline variants used on light surfaces. */
-.visit-cta .btn-plum { background: var(--gold); color: var(--gold-ink) }
+/* The band closes with the same two pills the footer carries. */
+.visit-cta .btn-pill.btn-pill-gold:hover { transform: translateY(-2px) }
 
-.visit-cta .btn-plum:hover { background: var(--gold-bright) }
-
-.visit-cta .btn-line { border-color: rgba(255, 255, 255, .45); color: #fff }
-
-.visit-cta .btn-line:hover { background: #fff; color: var(--plum) }
+.visit-cta .btn-pill:not(.btn-pill-gold):hover { background: #fff; border-color: #fff; color: var(--plum) }
 
 /* ---------- page hero + body ---------- */
 
-.page-hero { padding: clamp(72px, 9vw, 122px) 0 clamp(56px, 7vw, 84px); background: var(--plum-dark); color: #fff }
+/* Inner pages open on the same plate as the homepage hero: centred caps eyebrow,
+   heavy headline, gold rule, then the one-line body. */
+.page-hero { padding: clamp(76px, 9vw, 126px) 0 clamp(58px, 7vw, 92px); background: var(--plum-dark); color: #fff; text-align: center }
 
-.page-hero h1 { margin: 16px 0 18px; font-size: clamp(2.4rem, 5vw, 4.2rem); max-width: 20ch; color: #fff }
+.page-hero .container { display: grid; justify-items: center }
 
-.page-hero p { max-width: 620px; color: rgba(255, 255, 255, .8); font-size: 1.05rem }
+.page-hero h1 { margin: 18px 0 4px; max-width: 19ch; font-family: var(--font-body); font-weight: 800; font-size: clamp(2.25rem, 5vw, 3.9rem); line-height: 1.05; letter-spacing: -.032em; color: #fff }
+
+.page-hero h1 em { font-style: normal; color: var(--gold) }
+
+.page-hero .rule-gold { margin-top: 22px }
+
+.page-hero p { max-width: 56ch; margin: 26px 0 0; color: rgba(255, 255, 255, .84); font-size: 1.05rem }
 
 .crumbs { margin-bottom: 12px; font-size: .72rem; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: rgba(255, 255, 255, .6) }
 
@@ -856,17 +907,29 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
 /* ---------- footer ---------- */
 
-.site-footer { padding: clamp(64px, 8vw, 96px) 0 32px; background: var(--plum-deep); color: rgba(255, 255, 255, .74) }
+/* Charcoal rather than plum, so the page closes on a neutral plate and the two
+   gold affordances in the band above it are the only warm things down here. */
+.site-footer { padding: clamp(56px, 7vw, 84px) 0 30px; background: var(--charcoal); color: rgba(255, 255, 255, .72) }
 
 .site-footer h3, .site-footer h4 { color: #fff }
 
-.footer-grid { display: grid; grid-template-columns: 1.45fr .68fr 1.1fr .95fr; gap: 44px; padding-bottom: 44px; border-bottom: 1px solid rgba(255, 255, 255, .12) }
+.footer-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; margin-bottom: clamp(40px, 5.5vw, 68px); padding-bottom: clamp(40px, 5.5vw, 68px); border-bottom: 1px solid rgba(255, 255, 255, .1) }
+
+.footer-grid { display: grid; grid-template-columns: 1.5fr .8fr 1.1fr; gap: clamp(32px, 5vw, 56px); padding-bottom: 40px; border-bottom: 1px solid rgba(255, 255, 255, .1) }
 
 .footer-brand { display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-variation-settings: "SOFT" 40, "WONK" 1; font-size: 1.06rem; line-height: 1.15; color: #fff }
 
-.footer-brand img { width: 42px; height: 42px; border-radius: 50%; background: var(--gold); object-fit: cover }
+.footer-brand img { width: 42px; height: 42px; border-radius: 50%; background: #fff; object-fit: cover }
 
-.footer-blurb { max-width: 310px; margin: 18px 0 0; font-size: .92rem; line-height: 1.6 }
+.footer-blurb { max-width: 340px; margin: 18px 0 0; font-size: .92rem; line-height: 1.6 }
+
+.footer-social { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 0; padding: 0; list-style: none }
+
+.footer-social a { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: #fff; border: 1px solid rgba(255, 255, 255, .18); transition: background-color .18s ease, border-color .18s ease, color .18s ease }
+
+.footer-social a:hover { color: var(--gold-ink); background: var(--gold); border-color: var(--gold) }
+
+.footer-social svg { width: 17px; height: 17px }
 
 .footer-col { display: grid; align-content: start; gap: 11px; min-width: 0 }
 
@@ -903,19 +966,19 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     margin: 0;
     padding: 8px;
     list-style: none;
-    background: #fff;
-    border: 1px solid var(--line);
+    background: var(--plum-deep);
+    border: 1px solid rgba(255, 255, 255, .16);
     border-left: 0;
     border-bottom: 0;
     border-radius: 0 var(--radius) 0 0;
-    box-shadow: var(--shadow-sm)
+    box-shadow: var(--shadow-lg)
 }
 
 .social-rail li { pointer-events: auto }
 
-.social-rail a { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--radius-sm); color: var(--plum); transition: background-color .18s ease, color .18s ease }
+.social-rail a { display: grid; place-items: center; width: 34px; height: 34px; border-radius: var(--radius-sm); color: rgba(255, 255, 255, .82); transition: background-color .18s ease, color .18s ease }
 
-.social-rail a:hover { background: var(--plum-soft); color: var(--plum) }
+.social-rail a:hover { background: var(--gold); color: var(--gold-ink) }
 
 /* Kept below the base rule: a media query adds no specificity, so the earlier
    `display: flex` would otherwise win. The dock would cover a fifth of a phone
@@ -951,6 +1014,8 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .footer-grid { grid-template-columns: 1fr 1fr; gap: 34px }
 
+    .footer-col-brand { grid-column: 1 / -1 }
+
     .contact-grid { gap: 40px }
 
     .mission-inner { grid-template-columns: minmax(0, 260px) minmax(0, 1fr) }
@@ -961,7 +1026,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .nav { height: 70px; gap: 14px }
 
-    .nav-links { gap: 16px; font-size: .84rem }
+    .nav-links { gap: 16px; font-size: .84rem; justify-content: flex-end }
 
     .nav-links > a:not(.nav-cta) { display: none }
 
@@ -990,26 +1055,16 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
     /* The 640px rule hides the bar CTA; inside the open menu it belongs again. */
     .nav-links.open .nav-cta { display: inline-flex; margin: 18px 0 0; justify-content: center }
 
-    /* A wash over the full-bleed photograph left the picture as a dim strip on a
-       phone, so the photo becomes a band of its own and the copy sits on the
-       solid plum plate below it. */
-    .hero { display: flex; flex-direction: column; padding: 0 0 clamp(88px, 22vw, 128px) }
+    /* The photograph stays behind the copy instead of becoming its own band, so
+       the plate keeps the same shape on a phone as on a desk. */
+    .hero { padding: clamp(84px, 17vw, 116px) 0 clamp(104px, 20vw, 140px) }
 
-    .hero-media { position: relative; inset: auto; flex: none; height: clamp(210px, 60vw, 300px) }
+    .hero-lede { font-size: 1rem }
 
-    .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(33, 8, 39, .16) 0%, rgba(33, 8, 39, 0) 42%, var(--plum-deep) 100%) }
+    /* One column, with the gold rule lying down between the two cells. */
+    .split-inner { grid-template-columns: 1fr; gap: 34px }
 
-    .hero::before { display: none }
-
-    .hero .container { padding-top: 32px }
-
-    .hero-info { grid-template-columns: repeat(2, minmax(0, 1fr)) }
-
-    /* Three cells across two columns otherwise leave a hole at the end of the
-       band. */
-    .hero-info > .info-cell:nth-child(3):last-child { grid-column: 1 / -1 }
-
-    .info-cell { flex-direction: column; align-items: flex-start; gap: 12px; padding: 20px }
+    .split-rule { width: min(220px, 60%); height: 4px; min-height: 0; justify-self: center }
 
     .feature-banner, .simple-grid { grid-template-columns: 1fr; gap: 0 }
 
@@ -1033,7 +1088,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .mission-media img { max-width: 320px }
 
-    .section-head { align-items: flex-start; flex-direction: column; gap: 16px; margin-bottom: 32px }
+    .section-head { margin-bottom: 34px }
 
     .section-note { max-width: none }
 }
@@ -1047,26 +1102,19 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .nav-cta { display: none }
 
-    .hero { padding: 0 0 118px }
+    .hero { padding: 78px 0 100px }
 
-    .hero h1 { font-size: clamp(2.1rem, 8.4vw, 2.9rem); margin: 16px 0 20px }
+    .hero h1 { font-size: clamp(2.05rem, 8.6vw, 2.7rem); margin: 14px 0 18px }
 
-    .hero p { font-size: .98rem }
+    .hero-lede { font-size: .98rem }
 
     .hero-actions { gap: 10px; margin-top: 28px }
 
     .hero-actions .btn { flex: 1 1 auto }
 
-    .hero-info-wrap { margin-top: -88px }
+    .hero-play-disc { width: 58px; height: 58px }
 
-    /* Three stacked plates with the icon on its own line ate a screen and a half. */
-    .hero-info { grid-template-columns: 1fr }
-
-    .info-cell { flex-direction: row; align-items: center; gap: 14px; padding: 16px 18px }
-
-    .info-well { width: 42px; height: 42px }
-
-    .info-cell .msvg { width: 20px; height: 20px }
+    .hero-play-disc .msvg { width: 28px; height: 28px }
 
     .fact-grid { grid-template-columns: 1fr 1fr; gap: 26px 18px }
 
@@ -1115,7 +1163,7 @@ h3 { font-size: 1.3rem; letter-spacing: -.012em }
 
     .visit-inner .btn { flex: 1 1 auto }
 
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px }
+    .footer-grid { grid-template-columns: 1fr; gap: 30px }
 
     .footer-brand { grid-column: 1 / -1 }
 
