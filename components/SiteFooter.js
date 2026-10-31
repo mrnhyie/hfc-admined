@@ -7,7 +7,7 @@ const EXPLORE = [
   { href: '/programs', label: 'Programs' },
   { href: '/events', label: 'Events' },
   { href: '/content', label: 'Sermons & News' },
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/facebook', label: 'Facebook' },
   { href: '/contact', label: 'Contact' },
 ];
 

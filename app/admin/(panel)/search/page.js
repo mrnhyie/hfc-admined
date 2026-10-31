@@ -11,6 +11,7 @@ const KINDS = {
   programs: { label: 'Programs', icon: 'church', edit: (id) => `/admin/programs/${id}` },
   posts: { label: 'Sermons & news', icon: 'auto_stories', edit: (id) => `/admin/content/${id}` },
   media: { label: 'Gallery', icon: 'photo_camera', edit: (id) => `/admin/media/${id}` },
+  facebook: { label: 'Facebook', icon: 'public', edit: (id) => `/admin/facebook/${id}` },
   messages: { label: 'Messages', icon: 'mail', edit: () => '/admin/messages' },
 };
 

@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { createSession, destroySession, getSessionUser } from '@/lib/auth';
 import {
   parseEventForm,
+  parseFacebookPostForm,
   parseMediaForm,
   parsePostForm,
   parseProgramForm,
@@ -13,6 +14,7 @@ import {
 } from '@/lib/forms';
 import {
   eventsCrud,
+  facebookPostsCrud,
   getAdminByEmail,
   mediaCrud,
   postsCrud,
@@ -161,6 +163,29 @@ export async function deleteMedia(formData) {
   await mediaCrud.remove(toId(formData));
   revalidateSite();
   redirect('/admin/media');
+}
+
+export async function saveFacebookPost(state, formData) {
+  await requireAdmin();
+  const parsed = parseFacebookPostForm(formData);
+  if (!parsed.ok) return { errors: parsed.errors };
+
+  const id = formData.get('id');
+  if (id) {
+    await facebookPostsCrud.update(Number(id), parsed.values);
+  } else {
+    await facebookPostsCrud.create(parsed.values);
+  }
+
+  revalidateSite();
+  redirect('/admin/facebook');
+}
+
+export async function deleteFacebookPost(formData) {
+  await requireAdmin();
+  await facebookPostsCrud.remove(toId(formData));
+  revalidateSite();
+  redirect('/admin/facebook');
 }
 
 export async function saveSettings(state, formData) {

@@ -750,25 +750,191 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 
 .speaker-latest .msvg { align-self: flex-start }
 
-/* ---------- gallery ---------- */
+/* ---------- facebook band ---------- */
 
-.gallery-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: 210px 210px; gap: 14px }
+/* The band reproduces the Facebook post card itself: page header, caption,
+   photograph, then the reaction strip. Its type and greys are Facebook's own,
+   so the cards read as posts rather than as site cards. */
+.facebook-band { display: grid; gap: clamp(24px, 3vw, 40px) }
 
-.gallery-grid a { overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow-sm) }
+.facebook-band > .hero-actions { justify-content: center }
 
-.gallery-grid a:first-child { grid-row: span 2; border-radius: 18px }
+.fbp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+    gap: 16px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif
+}
 
-.gallery-grid a:last-child { grid-column: 2 / 4; border-radius: 18px }
+.fbp-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 14px 0 0;
+    background: #fff;
+    border: 1px solid #e4e6eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .06);
+    color: #050505
+}
 
-.gallery-grid img { width: 100%; height: 100%; transition: transform .5s ease }
+.fbp-card.is-linked { transition: border-color .15s ease, box-shadow .15s ease }
 
-.gallery-grid a:hover img { transform: scale(1.06) }
+.fbp-card.is-linked:hover {
+    border-color: #ccd0d5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, .08)
+}
 
-.gallery-full { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 18px }
+/* One stretched link per card: the whole post opens on Facebook, while the
+   caption and photograph stay in the document for reading and alt text. */
+.fbp-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit
+}
 
-.photo img { width: 100%; height: 250px; border-radius: var(--radius); box-shadow: var(--shadow-sm) }
+.fbp-link:focus-visible { outline: 3px solid #1877f2; outline-offset: 3px }
 
-.photo figcaption { margin-top: 9px; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.fbp-head { display: flex; align-items: center; gap: 10px; padding: 0 14px }
+
+.fbp-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; flex: none }
+
+.fbp-who { display: grid; gap: 1px; min-width: 0; line-height: 1.3 }
+
+.fbp-who strong { font-size: .94rem; font-weight: 600; letter-spacing: -.01em }
+
+.fbp-who span {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #65676b;
+    font-size: .78rem
+}
+
+.fbp-globe { width: 11px; height: 11px }
+
+.fbp-head .bsvg { width: 24px; height: 24px; margin-left: auto; color: #1877f2; flex: none }
+
+.fbp-text {
+    display: -webkit-box;
+    margin: 12px 0 0;
+    padding: 0 14px;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    font-size: .94rem;
+    line-height: 1.4;
+    white-space: pre-line
+}
+
+.fbp-media {
+    position: relative;
+    display: block;
+    margin: 12px 14px 0;
+    overflow: hidden;
+    border-radius: 6px;
+    background: #f0f2f5;
+    aspect-ratio: 16 / 10
+}
+
+.fbp-media img { width: 100%; height: 100%; object-fit: cover }
+
+.fbp-play {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin: auto;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .92);
+    color: #050505;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, .22)
+}
+
+.fbp-play .msvg { width: 28px; height: 28px }
+
+.fbp-foot {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    margin-top: auto;
+    padding: 10px 14px;
+    color: #65676b;
+    font-size: .82rem
+}
+
+.fbp-count { display: inline-flex; align-items: center; gap: 6px; min-height: 24px }
+
+.fbp-reacts { display: inline-flex }
+
+.fbp-reacts i {
+    display: grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    color: #fff
+}
+
+.fbp-reacts .is-like { background: #1877f2 }
+
+.fbp-reacts .is-love { background: #f3425f; margin-left: -6px }
+
+.fbp-reacts .msvg { width: 11px; height: 11px }
+
+.fbp-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #65676b
+}
+
+.fbp-open .msvg { width: 14px; height: 14px }
+
+.fbp-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0
+}
+
+/* Until a page token is configured the band shows the church's Facebook
+   identity rather than an empty plugin frame. */
+.facebook-page-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: min(520px, 100%);
+    margin: 0 auto;
+    padding: 22px 24px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm)
+}
+
+.facebook-page-card img { width: 56px; height: 56px; border-radius: 50%; flex: none }
+
+.facebook-page-card strong { display: block; font-size: 1.02rem }
+
+.facebook-page-card span { color: var(--muted); font-size: .9rem; line-height: 1.45 }
 
 /* ---------- invitation band ---------- */
 
@@ -1169,6 +1335,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     .contact-grid { gap: 40px }
 
     .mission-inner { grid-template-columns: minmax(0, 260px) minmax(0, 1fr) }
+
+    .fbp-grid { grid-template-columns: 1fr 1fr }
 }
 
 @keyframes nav-sheet-in {
@@ -1286,6 +1454,8 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
 @media (max-width: 640px) {
     :root { --section: 72px; --gutter: 28px }
 
+    .fbp-grid { grid-template-columns: 1fr }
+
     .brand img { width: 38px; height: 38px }
 
     .brand-word { font-size: .96rem }
@@ -1343,14 +1513,6 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     .sermon-side { display: grid; grid-template-columns: 1fr; gap: 20px }
 
     .sermon-side-item { margin: 0; border-bottom: 1px solid var(--line); padding-bottom: 20px }
-
-    .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 170px 150px 150px }
-
-    .gallery-grid a:last-child { grid-column: 1 / 3 }
-
-    .gallery-full { grid-template-columns: 1fr 1fr; gap: 10px }
-
-    .photo img { height: 170px }
 
     .visit-inner { align-items: flex-start }
 
@@ -2731,60 +2893,94 @@ main h2 { font-size: clamp(1.9rem, 2.9vw, 2.6rem) }
     border-radius: var(--radius-sm)
 }
 
+/* Sign-in borrows the plain login card from the reference: a quiet warm-white
+   page, one bordered sheet, a sentence-case primary. The fields and button keep
+   the portal's pill radius; nothing else on the screen competes with the form. */
+.login-page { background: #faf7f2 }
+
 .login-shell {
-    position: relative;
     display: grid;
     place-items: center;
     min-height: 100vh;
-    padding: 24px;
-    overflow: hidden;
-    isolation: isolate
+    padding: 32px 24px
 }
 
 .login-box {
-    position: relative;
-    overflow: hidden;
     width: 100%;
-    max-width: 420px;
-    padding: 32px;
-    background: var(--admin-glass);
-    -webkit-backdrop-filter: var(--admin-blur);
-    backdrop-filter: var(--admin-blur);
-    border: 1px solid var(--admin-glass-edge);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg), var(--admin-glass-lit)
+    max-width: 460px;
+    padding: 40px 38px 30px;
+    background: #fff;
+    border: 1px solid var(--admin-line);
+    border-radius: var(--radius);
+    box-shadow: 0 24px 60px -44px rgba(48, 11, 56, .45), 0 1px 2px rgba(32, 25, 36, .04)
 }
 
-/* The one accent the sign-in screen gets, in place of the painted backdrop. */
-.login-box::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto;
-    height: 3px;
-    background: var(--gold)
+.login-kicker {
+    display: block;
+    color: var(--plum);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase
 }
 
 .login-box h1 {
-    margin: 16px 0 24px;
+    margin: 14px 0 6px;
     font-family: var(--font-body);
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -.03em;
+    font-size: 1.9rem;
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -.025em;
     color: var(--admin-ink)
 }
 
-.login-box .field:last-of-type { margin-bottom: 22px }
-
-.login-box .btn-admin { width: 100% }
-
-.login-foot {
-    margin: 18px 0 0;
-    font-size: 13px;
+.login-sub {
+    margin: 0 0 28px;
+    font-size: .92rem;
+    line-height: 1.5;
     color: var(--admin-muted)
 }
 
-.login-foot a { color: var(--plum) }
+.login-box .label {
+    margin-bottom: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--admin-ink)
+}
+
+.login-box .field { margin-bottom: 18px }
+
+.login-box .input {
+    padding: 13px 20px;
+    background: #fff;
+    font-size: 15px
+}
+
+.login-submit {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none
+}
+
+.login-foot {
+    margin: 24px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--admin-line);
+    font-size: 13px;
+    text-align: center;
+    color: var(--admin-muted)
+}
+
+.login-foot a { color: var(--plum); font-weight: 600 }
+
+@media (max-width: 520px) {
+    .login-box { padding: 32px 22px 24px }
+}
 
 .admin a:focus-visible,
 .admin button:focus-visible,

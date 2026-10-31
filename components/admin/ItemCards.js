@@ -165,6 +165,39 @@ export function PostItemCard({ post, deleteAction }) {
   );
 }
 
+export function FacebookItemCard({ post, deleteAction }) {
+  const counts = [
+    post.reactions == null ? null : `${post.reactions} reactions`,
+    post.comments == null ? null : `${post.comments} comments`,
+  ].filter(Boolean);
+
+  return (
+    <article className="entity-card">
+      <Shot src={post.image_url} alt={post.image_alt} badge={<Status published={post.published} />}>
+        <MaterialIcon name="public" className="card-shot-mark" />
+        <span className="card-shot-when">{formatDate(post.posted_at)}</span>
+      </Shot>
+
+      <div className="card-info">
+        <p className="card-meta">{counts.length ? counts.join(' · ') : 'Counts hidden'}</p>
+
+        <h3>{post.caption || post.image_alt || 'Photo post'}</h3>
+        <p className="card-body">{post.image_url ? 'Includes a photo.' : 'Text-only post.'}</p>
+
+        <Actions
+          item={post}
+          viewHref={post.post_url}
+          editHref={`/admin/facebook/${post.id}`}
+          deleteAction={deleteAction}
+          extra={
+            <span className="card-meta">{post.post_url ? 'Links to the original post' : 'No original link'}</span>
+          }
+        />
+      </div>
+    </article>
+  );
+}
+
 export function MediaItemCard({ item, deleteAction }) {
   return (
     <article className="entity-card">
@@ -177,7 +210,6 @@ export function MediaItemCard({ item, deleteAction }) {
 
         <Actions
           item={item}
-          viewHref="/gallery"
           editHref={`/admin/media/${item.id}`}
           deleteAction={deleteAction}
           deleteLabel="Remove"

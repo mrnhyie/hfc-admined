@@ -4,10 +4,13 @@ import ContactForm from '@/components/ContactForm';
 import CrossMarks from '@/components/CrossMarks';
 import Emphasise from '@/components/Emphasise';
 import EventCard from '@/components/EventCard';
+import FacebookFallback from '@/components/FacebookFallback';
+import FacebookFeed from '@/components/FacebookFeed';
 import MaterialIcon from '@/components/MaterialIcon';
 import ProgramCard from '@/components/ProgramCard';
 import SpeakerCard from '@/components/SpeakerCard';
 import Watermark from '@/components/Watermark';
+import { getFacebookFeed } from '@/lib/facebook';
 import {
   getFactCounts,
   getLatestSermon,
@@ -35,7 +38,7 @@ const AUDIENCES = [
 ];
 
 export default async function HomePage() {
-  const [settings, programs, events, posts, media, counts, speakers, sermon] = await Promise.all([
+  const [settings, programs, events, posts, media, counts, speakers, sermon, feed] = await Promise.all([
     getSettings(),
     getPrograms(),
     getUpcomingEvents(4),
@@ -44,7 +47,9 @@ export default async function HomePage() {
     getFactCounts(),
     getSpeakers({ limit: 6 }),
     getLatestSermon(),
+    getFacebookFeed(3),
   ]);
+  const facebook = feed.posts || [];
 
   const scheduled = programs.filter((program) => program.meeting_day);
   const ministries = programs.filter((program) => !program.meeting_day);
@@ -356,44 +361,45 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section className="section section-ivory" id="gallery">
-        <CrossMarks seed="home-gallery" />
-        <div className="container">
-          <div className="section-head">
-            <div>
-              <div className="section-label">{settings.gallery_kicker}</div>
-              <h2 className="section-title">{settings.gallery_title}</h2>
+      {settings.facebook_url ? (
+        <section className="section section-ivory" id="facebook">
+          <CrossMarks seed="home-facebook" />
+          <div className="container facebook-band">
+            <div className="section-head">
+              <div>
+                <div className="section-label">From Facebook</div>
+                <h2 className="section-title">Life at Higherlife, as it happens</h2>
+              </div>
+              <p className="section-note">
+                Photos, announcements and moments from the church family, posted straight to our Facebook page.
+              </p>
             </div>
-            <Link className="section-link" href="/gallery">
-              Browse the gallery
-              <MaterialIcon name="arrow_forward" />
-            </Link>
-          </div>
 
-          {media.length >= 5 ? (
-            <div className="gallery-grid">
-              {media.slice(0, 5).map((item) => (
-                <Link key={item.id} href="/gallery" aria-label={item.alt || item.caption || 'Open the gallery'}>
-                  <img src={item.url} alt={item.alt} loading="lazy" />
-                </Link>
-              ))}
+            {facebook.length ? (
+              <FacebookFeed
+                posts={facebook}
+                limit={3}
+                pageName={settings.church_name}
+                avatar={settings.logo_url}
+              />
+            ) : (
+              <FacebookFallback pageName={settings.church_name} avatar={settings.logo_url} />
+            )}
+
+            <div className="hero-actions">
+              <a
+                className="btn btn-pill btn-pill-plum"
+                href={settings.facebook_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Follow us on Facebook
+                <MaterialIcon name="arrow_outward" />
+              </a>
             </div>
-          ) : media.length ? (
-            <div className="gallery-full">
-              {media.map((item) => (
-                <figure className="photo" key={item.id}>
-                  <img src={item.url} alt={item.alt} loading="lazy" />
-                  {item.caption || item.album ? (
-                    <figcaption>{item.caption || item.album}</figcaption>
-                  ) : null}
-                </figure>
-              ))}
-            </div>
-          ) : (
-            <div className="empty">Photos from church life will show up here.</div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
+      ) : null}
 
       <section className="visit-cta">
         <div className="container visit-inner">

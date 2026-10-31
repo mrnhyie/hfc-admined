@@ -12,7 +12,7 @@ export default async function LoginPage() {
   const settings = await getSettings();
 
   return (
-    <div className="admin">
+    <div className="admin login-page">
       <div className="login-shell">
         <LoginForm churchName={settings.church_short} />
       </div>

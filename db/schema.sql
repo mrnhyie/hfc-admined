@@ -92,6 +92,23 @@ create table if not exists media (
   created_at timestamptz not null default now()
 );
 
+-- Facebook posts shown on /facebook when the page has no Graph API token, or
+-- when a post is worth pinning. Reactions and comments stay null until someone
+-- enters the real numbers, so the card never invents engagement.
+create table if not exists facebook_posts (
+  id         bigserial primary key,
+  caption    text not null default '',
+  image_url  text,
+  image_alt  text not null default '',
+  post_url   text,
+  posted_at  timestamptz not null default now(),
+  reactions  integer,
+  comments   integer,
+  published  boolean not null default true,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
 create table if not exists messages (
   id         bigserial primary key,
   name       text not null,
@@ -115,6 +132,7 @@ create index if not exists programs_published_idx on programs (published, sort_o
 create index if not exists posts_published_idx on posts (published, published_at desc);
 create index if not exists posts_event_idx on posts (event_id);
 create index if not exists messages_status_idx on messages (status, created_at desc);
+create index if not exists facebook_posts_published_idx on facebook_posts (published, posted_at desc);
 
 drop trigger if exists programs_updated on programs;
 create trigger programs_updated before update on programs for each row execute function set_updated_at();
@@ -126,3 +144,5 @@ drop trigger if exists messages_updated on messages;
 create trigger messages_updated before update on messages for each row execute function set_updated_at();
 drop trigger if exists settings_updated on settings;
 create trigger settings_updated before update on settings for each row execute function set_updated_at();
+drop trigger if exists facebook_posts_updated on facebook_posts;
+create trigger facebook_posts_updated before update on facebook_posts for each row execute function set_updated_at();

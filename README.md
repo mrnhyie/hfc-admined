@@ -62,14 +62,15 @@ Vercel issues the TLS certificate automatically once DNS propagates. Set the ape
 | `events` | Dated programmes: conferences, retreats, special services. Upcoming vs past is computed from `starts_at`/`ends_at`. |
 | `posts` | Content attached to an event or a program (sermons, announcements, devotionals) or standalone. Body accepts Markdown. Sermons can carry a `series`, a `speaker` and a `video_url`. |
 | `media` | Gallery photos, grouped into albums. |
+| `facebook_posts` | Facebook posts entered by hand: caption, photo, original link, date and optional reaction/comment counts. |
 | `messages` | Contact form submissions, with new/read/archived states. |
 | `settings` | Editable site text (headings, hero and about copy, contact details, social links, giving link, map embed). |
 | `admins` | Portal logins, bcrypt hashed. |
 
 ## Pages
 
-Public: `/`, `/events`, `/events/[slug]`, `/programs`, `/programs/[slug]`, `/content` (filter by kind or sermon series), `/content/[slug]`, `/gallery` (filter by album), `/contact`.
-Admin: `/admin/login`, `/admin` (dashboard), `/admin/events|programs|content|media|messages|settings`.
+Public: `/`, `/events`, `/events/[slug]`, `/programs`, `/programs/[slug]`, `/content` (filter by kind or sermon series), `/content/[slug]`, `/facebook` (the church's Facebook posts), `/contact`. `/gallery` permanently redirects to `/facebook`.
+Admin: `/admin/login`, `/admin` (dashboard), `/admin/events|programs|content|media|facebook|messages|settings`.
 
 The **Site text** page in the admin portal controls the hero photo, about photo, the background
 photo behind the weekly services band, the weekly service
@@ -78,6 +79,33 @@ pane fixed to the left edge of the site and a line in the footer) and the giving
 **Giving URL** blank hides every Give button; the navigation button then falls back to "Plan a Visit".
 
 Images shipped in `public/images`. To add new uploads, put files in `public/images` and paste the path (`/images/photo.jpg`) in the Photo URL field, or attach a Vercel Blob store and use its URLs.
+
+## Facebook posts
+
+`/facebook` (and the "From Facebook" band on the home page) shows the church's Facebook posts as a
+three-column card grid. There are two sources, checked in this order:
+
+1. **Saved posts** entered in **Admin → Facebook**. Anyone at the church can add a caption, a photo,
+   the link to the original post, its date, and — only if known — the real reaction and comment
+   counts. Blank counts stay hidden, and the card never invents engagement numbers.
+2. **The Graph API**, when the two environment variables below are set. Graph posts replace the saved
+   cards entirely (the two are never mixed) and are cached for 15 minutes.
+
+| Variable | Value |
+| --- | --- |
+| `FACEBOOK_PAGE_ID` | the page's numeric id — for `profile.php?id=100088119769357`, the id is `100088119769357` |
+| `FACEBOOK_PAGE_TOKEN` | a **Page** access token with `pages_read_engagement` (see below) |
+
+To mint a long-lived token: create an app at developers.facebook.com, add the **Facebook Login**
+product, open **Tools → Graph API Explorer**, pick the app, request
+`pages_read_engagement,pages_show_list`, then call
+`/me/accounts` and copy the `access_token` on the church page. Exchange it once for a long-lived
+token with `/oauth/access_token?grant_type=fb_exchange_token&client_id=…&client_secret=…&fb_exchange_token=…`.
+
+The token stays on the server: it is sent as an `Authorization: Bearer` header, never in a URL or in
+the browser. Set it locally with `npx vercel env pull` or by appending to `.env.local`, and in
+production with `npx vercel env add FACEBOOK_PAGE_TOKEN production`. Without both variables the band
+shows the saved posts, or the church's Facebook page card and a Follow button while it is still empty.
 
 ## Notes
 

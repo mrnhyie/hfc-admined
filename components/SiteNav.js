@@ -9,7 +9,7 @@ const LINKS = [
   { href: '/programs', label: 'Programs' },
   { href: '/events', label: 'Events' },
   { href: '/content', label: 'Sermons' },
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/facebook', label: 'Facebook' },
   { href: '/contact', label: 'Contact' },
 ];
 
