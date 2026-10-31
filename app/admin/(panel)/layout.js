@@ -19,6 +19,7 @@ export default async function AdminPanelLayout({ children }) {
         <aside className="admin-side">
           <AdminNav
             churchName={settings.church_short}
+            logoUrl={settings.logo_url}
             userName={user.name}
             userEmail={user.email}
             counts={counts}

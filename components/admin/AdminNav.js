@@ -38,13 +38,15 @@ const initials = (name) =>
     .join('')
     .toUpperCase();
 
-export default function AdminNav({ churchName, userName, userEmail, counts = {} }) {
+export default function AdminNav({ churchName, logoUrl, userName, userEmail, counts = {} }) {
   const pathname = usePathname();
 
   return (
     <>
       <div className="admin-brand">
-        <span className="admin-brand-mark">{initials(churchName)}</span>
+        <span className={logoUrl ? 'admin-brand-mark has-logo' : 'admin-brand-mark'}>
+          {logoUrl ? <img src={logoUrl} alt={churchName} /> : initials(churchName)}
+        </span>
         <span className="admin-brand-name">{churchName}</span>
       </div>
 
